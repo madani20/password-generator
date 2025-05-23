@@ -1,5 +1,9 @@
 package com.mad.password_generator.models;
 
+import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
+import org.springframework.stereotype.Service;
+
+@Service
 public final class PasswordOptions {
 
     // === CHAMPS IMMUTABLES ===
@@ -93,10 +97,13 @@ public final class PasswordOptions {
         }
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
-        public PasswordOptions build() {
+        public PasswordOptions build() throws InvalidPasswordOptionsException {
             // Validation simple (exemple)
-            if (length < 4) {
-                throw new IllegalArgumentException("La longueur minimale est 4");
+            if (length < 4 || length > 64) {
+                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 64 caractères.");
+            }
+            if(!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars) {
+                throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
             }
             return new PasswordOptions(this);
         }
