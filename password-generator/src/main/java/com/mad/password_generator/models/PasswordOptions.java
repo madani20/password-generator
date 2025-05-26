@@ -1,19 +1,28 @@
 package com.mad.password_generator.models;
 
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public final class PasswordOptions {
 
     // === CHAMPS IMMUTABLES ===
+
     private final int length;
+
     private final boolean includeUppercase;
     private final boolean includeLowercase;
     private final boolean includeDigits;
     private final boolean includeSpecialChars;
     private final boolean excludeSimilarChars;
+    private final boolean requireEachType;
+
+    @NotNull
     private final String strategy;
+
     private final String prefix;
     private final String suffix;
 
@@ -25,6 +34,7 @@ public final class PasswordOptions {
         this.includeDigits = builder.includeDigits;
         this.includeSpecialChars = builder.includeSpecialChars;
         this.excludeSimilarChars = builder.excludeSimilarChars;
+        this.requireEachType = builder.requireEachType;
         this.strategy = builder.strategy;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
@@ -38,6 +48,7 @@ public final class PasswordOptions {
     public boolean isIncludeDigits() { return includeDigits; }
     public boolean isIncludeSpecialChars() { return includeSpecialChars; }
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
+    public boolean isRequireEachType() { return requireEachType; }
     public String getStrategy() { return strategy; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
@@ -53,11 +64,12 @@ public final class PasswordOptions {
         private boolean includeDigits = true;
         private boolean includeSpecialChars = false;
         private boolean excludeSimilarChars = false;
+        private boolean requireEachType = false;
         private String strategy = "RANDOM_MIXED";
         private String prefix;
         private String suffix;
 
-        // === MÉTHODES FLUIDES DE CONFIGURATION ===
+        // === MÉTHODES DE CONFIGURATION ===
 
         public Builder length(int length) {
             this.length = length;
@@ -83,6 +95,10 @@ public final class PasswordOptions {
             this.excludeSimilarChars = value;
             return this;
         }
+        public Builder requireEachType(boolean value) {
+            this.requireEachType = value;
+            return this;
+        }
         public Builder strategy(String strategy) {
             this.strategy = strategy;
             return this;
@@ -98,12 +114,16 @@ public final class PasswordOptions {
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
         public PasswordOptions build() throws InvalidPasswordOptionsException {
-            // Validation simple (exemple)
-            if (length < 4 || length > 64) {
-                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 64 caractères.");
+            // Validation simple
+            if (length < 4 || length > 120) {
+                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
             }
             if(!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars) {
                 throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
+            }
+            if (requireEachType && length < 4) {
+                throw new InvalidPasswordOptionsException("Impossible de satisfaire `requireEachType` avec une longueur inférieure à 4."
+                );
             }
             return new PasswordOptions(this);
         }
