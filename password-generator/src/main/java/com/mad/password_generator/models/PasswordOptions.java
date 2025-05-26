@@ -12,13 +12,13 @@ public final class PasswordOptions {
     // === CHAMPS IMMUTABLES ===
 
     private final int length;
-
     private final boolean includeUppercase;
     private final boolean includeLowercase;
     private final boolean includeDigits;
     private final boolean includeSpecialChars;
     private final boolean excludeSimilarChars;
     private final boolean requireEachType;
+    private final String allowedChars;
 
     @NotNull
     private final String strategy;
@@ -35,10 +35,10 @@ public final class PasswordOptions {
         this.includeSpecialChars = builder.includeSpecialChars;
         this.excludeSimilarChars = builder.excludeSimilarChars;
         this.requireEachType = builder.requireEachType;
-        this.strategy = builder.strategy;
+         this.strategy = builder.strategy;
+        this.allowedChars = builder.allowedChars;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
-
     }
 
     // === GETTERS ==
@@ -49,6 +49,7 @@ public final class PasswordOptions {
     public boolean isIncludeSpecialChars() { return includeSpecialChars; }
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
     public boolean isRequireEachType() { return requireEachType; }
+    public String getAllowedChars() { return allowedChars; }
     public String getStrategy() { return strategy; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
@@ -65,6 +66,7 @@ public final class PasswordOptions {
         private boolean includeSpecialChars = false;
         private boolean excludeSimilarChars = false;
         private boolean requireEachType = false;
+        private String allowedChars;
         private String strategy = "RANDOM_MIXED";
         private String prefix;
         private String suffix;
@@ -103,6 +105,11 @@ public final class PasswordOptions {
             this.strategy = strategy;
             return this;
         }
+        public Builder allowedChars(String allowedChars) {
+            this.allowedChars = allowedChars;
+            return this;
+        }
+
         public Builder prefix(String prefix) {
             this.prefix = prefix;
             return this;

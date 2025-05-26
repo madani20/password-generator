@@ -14,4 +14,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(invalidPasswordOptionsException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(StrategyNotFoundException.class)
+    public ResponseEntity<?> handleStrategyNotFoundException(StrategyNotFoundException strategyNotFoundException) {
+        return new ResponseEntity<>(strategyNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
