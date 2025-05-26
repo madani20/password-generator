@@ -15,10 +15,18 @@ public class PasswordOptionsRequestDTO {
     @NotNull
     private int length;
 
+    @NotNull
     private boolean includeUppercase = true;
+
+    @NotNull
     private boolean includeLowercase = true;
+
+    @NotNull
     private boolean includeDigits = true;
+
+    @NotNull
     private boolean includeSpecialChars = false;
+
     private boolean excludeSimilarChars = false;
     private boolean requireEachType = false;
 

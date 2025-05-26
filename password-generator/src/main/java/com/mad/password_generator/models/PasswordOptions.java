@@ -113,7 +113,7 @@ public final class PasswordOptions {
         }
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
-        public PasswordOptions build() throws InvalidPasswordOptionsException {
+        public PasswordOptions build() {
             // Validation simple
             if (length < 4 || length > 120) {
                 throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
