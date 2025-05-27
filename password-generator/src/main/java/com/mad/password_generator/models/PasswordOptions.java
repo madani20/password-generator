@@ -1,10 +1,7 @@
 package com.mad.password_generator.models;
 
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.stereotype.Service;
 
-@Service
 public final class PasswordOptions {
 
     // === CHAMPS IMMUTABLES ===
@@ -17,10 +14,7 @@ public final class PasswordOptions {
     private final boolean excludeSimilarChars;
     private final boolean requireEachType;
     private final String allowedChars;
-
-    @NotNull
     private final String strategy;
-
     private final String prefix;
     private final String suffix;
 
@@ -40,6 +34,7 @@ public final class PasswordOptions {
     }
 
     // === GETTERS ==
+
     public int getLength() { return length; }
     public boolean isIncludeUppercase() { return includeUppercase; }
     public boolean isIncludeLowercase() { return includeLowercase; }
@@ -55,7 +50,6 @@ public final class PasswordOptions {
     public static Builder builder() {
         return new Builder();
     }
-
     public static class Builder {
         private int length = 12; // Valeur par défaut
         private boolean includeUppercase = true;

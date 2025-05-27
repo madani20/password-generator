@@ -28,6 +28,7 @@ public class PasswordOptionsRequestDTO {
     private boolean includeSpecialChars = false;
 
     private boolean excludeSimilarChars = false;
+
     private boolean requireEachType = false;
 
     @NotNull
