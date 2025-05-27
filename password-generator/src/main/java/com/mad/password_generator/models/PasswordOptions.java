@@ -1,8 +1,6 @@
 package com.mad.password_generator.models;
 
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 

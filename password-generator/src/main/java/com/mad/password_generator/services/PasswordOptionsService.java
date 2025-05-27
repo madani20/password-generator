@@ -32,7 +32,7 @@ public class PasswordOptionsService {
      * @return Un objet de type 'PasswordOptionsResponseDTO' constituant le mot de passe.
      */
     public PasswordOptionsResponseDTO generate(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-        logger.info("Init generate");
+        logger.info("Init generate()");
 
         validateInput(passwordOptionsRequestDTO);
 
@@ -41,16 +41,19 @@ public class PasswordOptionsService {
 
         /* Sélection de la stratégie */
         _PasswordGenerationStrategy strategy = strategyRegistry.getStrategy(options.getStrategy());
-        logger.info("La stratégie: {}", strategy);
 
         /* Génération du mot de pasee en fonction de la stratégie */
         String password = strategy.generate(options);
 
-        /* Post-traitements*/
+        /* Post-traitements le cas échéant */
         password = postProcessorChain.apply(password, options);
 
-        logger.info("Fin generate");
-        return new PasswordOptionsResponseDTO();
+        PasswordOptionsResponseDTO generatedPassword = mapper.map(password, PasswordOptionsResponseDTO.class);
+
+        logger.info("Mot de passe généré à retourner: {}. Stratégie utilisée: {}.", generatedPassword, strategy);
+        logger.info("Fin generate()");
+
+        return generatedPassword;
     }
 
 
@@ -64,12 +67,11 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO.getLength() < 4 || passwordOptionsRequestDTO.getLength() > 120) {
             throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
         }
-        if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() &&
-                !passwordOptionsRequestDTO.isIncludeDigits() && !passwordOptionsRequestDTO.isIncludeSpecialChars()) {
+        if (!requiredEachType(passwordOptionsRequestDTO)) {
             throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
         }
         if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 4) {
-            throw new InvalidPasswordOptionsException("Impossible de satisfaire `requireEachType` avec une longueur inférieure à 4 caractères."
+            throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 4 caractères."
             );
         }
         logger.info("Fin validateInput");

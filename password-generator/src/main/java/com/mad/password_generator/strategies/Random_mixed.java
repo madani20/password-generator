@@ -1,6 +1,7 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -15,7 +16,8 @@ import java.util.Random;
  *
  *     Exemple : 3@Pfw$LmN9q#
  */
-@Component("RANDOM")
+@Component
+@Qualifier("RANDOM")
 public class Random_mixed implements _PasswordGenerationStrategy {
 
     private final Random random = new SecureRandom();
@@ -42,7 +44,6 @@ public class Random_mixed implements _PasswordGenerationStrategy {
             int index = random.nextInt(charset.length());
             result.append(charset.charAt(index));
         }
-
         return result.toString();
     }
 }
