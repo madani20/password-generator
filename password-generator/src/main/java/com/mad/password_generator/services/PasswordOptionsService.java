@@ -18,12 +18,12 @@ public class PasswordOptionsService {
 
     private final PasswordOptionsMapper mapper;
     private final PasswordPostProcessorChain postProcessorChain;
-    private final StrategyRegistry strategyRegistry;
+    private final PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry;
 
-    public PasswordOptionsService(PasswordOptionsMapper mapper, PasswordPostProcessorChain postProcessorChain, StrategyRegistry strategyRegistry) {
+    public PasswordOptionsService(PasswordOptionsMapper mapper, PasswordPostProcessorChain postProcessorChain, PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry) {
         this.mapper = mapper;
         this.postProcessorChain = postProcessorChain;
-        this.strategyRegistry = strategyRegistry;
+        this.passwordGenerationStrategyRegistry = passwordGenerationStrategyRegistry;
     }
 
     /**
@@ -38,10 +38,10 @@ public class PasswordOptionsService {
         validateInput(passwordOptionsRequestDTO);
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
-        logger.info(" Objet options mappé: {}", options.toString());
+        logger.info(" Stratégie dans l'objet options mappé: {}", options.getStrategy());
 
         /* Sélection de la stratégie */
-        _PasswordGenerationStrategy strategy = strategyRegistry.getStrategy(options.getStrategy());
+        _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getStrategy());
 
         /* Génération du mot de pasee en fonction de la stratégie */
         String password = strategy.generate(options);
@@ -51,7 +51,6 @@ public class PasswordOptionsService {
 
         PasswordOptionsResponseDTO generatedPassword = mapper.toResponseDTO(password);
 
-        logger.info("Mot de passe généré à retourner: {}. Stratégie utilisée: {}.", generatedPassword, strategy);
         logger.info("Fin generate()");
 
         return generatedPassword;
@@ -65,16 +64,22 @@ public class PasswordOptionsService {
     private void validateInput(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
     logger.info("Init validateInput");
 
-        if (passwordOptionsRequestDTO.getLength() < 4 || passwordOptionsRequestDTO.getLength() > 120) {
+        if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
             throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
         }
-        if (!requiredEachType(passwordOptionsRequestDTO)) {
-            throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
+        if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() &&
+                !passwordOptionsRequestDTO.isIncludeDigits() && !passwordOptionsRequestDTO.isIncludeSpecialChars()) {
+            throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné");
         }
-        if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 4) {
+
+        if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
             throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 4 caractères."
             );
         }
+        if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().isEmpty()) {
+            throw new InvalidPasswordOptionsException("La stratégie de génération ne peut pas être vide");
+        }
+
         logger.info("Fin validateInput");
     }
 

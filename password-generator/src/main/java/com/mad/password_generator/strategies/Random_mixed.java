@@ -16,8 +16,7 @@ import java.util.Random;
  *
  *     Exemple : 3@Pfw$LmN9q#
  */
-@Component
-@Qualifier("RANDOM")
+@Component("RANDOM")
 public class Random_mixed implements _PasswordGenerationStrategy {
 
     private final Random random = new SecureRandom();
@@ -46,6 +45,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
         }
         return result.toString();
     }
+
 }
 
 

@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Validated
 @RequestMapping("/api")
 public class PasswordController {
     private static final Logger logger = LoggerFactory.getLogger(PasswordController.class);
@@ -29,12 +31,7 @@ public class PasswordController {
         logger.info("Fin PasswordController()");
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
-    @GetMapping(value = "/test", produces = "text/plain")
-    public String getTest() {
-        return "Hello test.";
-    }
-
-}
+  }
 
 
 

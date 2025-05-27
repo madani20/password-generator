@@ -9,4 +9,7 @@ public class PasswordOptionsResponseDTO {
 
     private String password;
 
+    public PasswordOptionsResponseDTO(String password) {
+        this.password = password;
+    }
 }

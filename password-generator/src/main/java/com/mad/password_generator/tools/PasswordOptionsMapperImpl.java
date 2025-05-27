@@ -30,8 +30,6 @@ public class PasswordOptionsMapperImpl implements PasswordOptionsMapper{
 
     @Override
     public PasswordOptionsResponseDTO toResponseDTO(String generatedPassword) {
-        PasswordOptionsResponseDTO password = new PasswordOptionsResponseDTO();
-        password.setPassword(generatedPassword);
-        return password;
+       return new PasswordOptionsResponseDTO(generatedPassword);
     }
 }
