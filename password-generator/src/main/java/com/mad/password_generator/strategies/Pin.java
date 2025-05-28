@@ -1,6 +1,7 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -15,7 +16,7 @@ import java.util.Random;
  *
  *     Exemple : 8291
  */
-@Component("PIN")
+@Component
 public class Pin implements _PasswordGenerationStrategy{
 
     private final Random random = new SecureRandom();
@@ -24,6 +25,11 @@ public class Pin implements _PasswordGenerationStrategy{
     public String generate(PasswordOptions options) {
 
         return "";
+    }
+
+    @Override
+    public PasswordStrategyType getStrategyType() {
+        return PasswordStrategyType.PIN;
     }
 
 }

@@ -4,12 +4,12 @@ import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
 import com.mad.password_generator.strategies._PasswordGenerationStrategy;
 import com.mad.password_generator.tools.PasswordOptionsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 
 
 @Service
@@ -38,10 +38,9 @@ public class PasswordOptionsService {
         validateInput(passwordOptionsRequestDTO);
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
-        logger.info(" Stratégie: {}", options.getStrategy());
 
         /* Sélection de la stratégie */
-        _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getStrategy());
+        _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getPasswordStrategyType());
 
         /* Génération du mot de pasee en fonction de la stratégie */
         String password = strategy.generate(options);
@@ -76,8 +75,8 @@ public class PasswordOptionsService {
             throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
             );
         }
-        if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().isEmpty()) {
-            throw new InvalidPasswordOptionsException("La stratégie de génération ne peut pas être vide");
+        if (passwordOptionsRequestDTO.getStrategy() == null) {
+            throw new InvalidPasswordOptionsException("La stratégie de génération doit exister.");
         }
 
         logger.info("Fin validateInput");
@@ -87,4 +86,8 @@ public class PasswordOptionsService {
         return passwordOptionsRequestDTO.isIncludeUppercase() && passwordOptionsRequestDTO.isIncludeLowercase() && passwordOptionsRequestDTO.isIncludeDigits()
                 && passwordOptionsRequestDTO.isIncludeSpecialChars();
     }
+   /* private void notNullValidation(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+        if(passwordOptionsRequestDTO == null)
+            throw new InvalidPasswordOptionsException("Pas d'objet pour générer le mot de passe.");
+    }*/
 }

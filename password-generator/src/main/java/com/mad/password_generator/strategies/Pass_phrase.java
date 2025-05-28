@@ -1,11 +1,19 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Pass_phrase implements _PasswordGenerationStrategy {
     @Override
     public String generate(PasswordOptions options) {
         return "";
+    }
+
+    @Override
+    public PasswordStrategyType getStrategyType() {
+        return PasswordStrategyType.PASS_PHRASE;
     }
     /**
      *  PASS_PHRASE – Phrase secrète

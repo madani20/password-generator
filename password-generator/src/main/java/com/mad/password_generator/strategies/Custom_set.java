@@ -1,11 +1,17 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
 
 public class Custom_set  implements _PasswordGenerationStrategy {
     @Override
     public String generate(PasswordOptions options) {
         return "";
+    }
+
+    @Override
+    public PasswordStrategyType getStrategyType() {
+        return null;
     }
     /**
      * CUSTOM_SET – Utilisation d’un alphabet défini

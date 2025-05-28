@@ -1,5 +1,6 @@
 package com.mad.password_generator.dto;
 
+import com.mad.password_generator.models.PasswordStrategyType;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class PasswordOptionsRequestDTO {
     private boolean requireEachType = false;
 
     @NotNull
-    private String strategy;
+    private PasswordStrategyType strategy;
 
     private String pattern;
 

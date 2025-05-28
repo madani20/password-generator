@@ -14,7 +14,7 @@ public final class PasswordOptions {
     private final boolean excludeSimilarChars;
     private final boolean requireEachType;
     private final String allowedChars;
-    private final String strategy;
+    private final PasswordStrategyType passwordStrategyType;
     private final String pattern;
     private final String prefix;
     private final String suffix;
@@ -28,11 +28,12 @@ public final class PasswordOptions {
         this.includeSpecialChars = builder.includeSpecialChars;
         this.excludeSimilarChars = builder.excludeSimilarChars;
         this.requireEachType = builder.requireEachType;
-         this.strategy = builder.strategy;
+        this.passwordStrategyType = builder.strategy;
         this.pattern = builder.pattern;
         this.allowedChars = builder.allowedChars;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
+
     }
 
     // === GETTERS ==
@@ -45,7 +46,7 @@ public final class PasswordOptions {
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
     public boolean isRequireEachType() { return requireEachType; }
     public String getAllowedChars() { return allowedChars; }
-    public String getStrategy() { return strategy; }
+    public PasswordStrategyType getPasswordStrategyType() { return passwordStrategyType;}
     public String getPattern() { return pattern; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
@@ -62,7 +63,7 @@ public final class PasswordOptions {
         private boolean excludeSimilarChars = false;
         private boolean requireEachType = false;
         private String allowedChars;
-        private String strategy = "RANDOM";
+        private PasswordStrategyType strategy = null;
         private String pattern;
         private String prefix;
         private String suffix;
@@ -97,7 +98,7 @@ public final class PasswordOptions {
             this.requireEachType = value;
             return this;
         }
-        public Builder strategy(String strategy) {
+        public Builder strategy(PasswordStrategyType strategy) {
             this.strategy = strategy;
             return this;
         }

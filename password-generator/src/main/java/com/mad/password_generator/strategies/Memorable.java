@@ -1,11 +1,17 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
 
 public class Memorable implements _PasswordGenerationStrategy {
     @Override
     public String generate(PasswordOptions options) {
         return "";
+    }
+
+    @Override
+    public PasswordStrategyType getStrategyType() {
+        return null;
     }
 }
 /**

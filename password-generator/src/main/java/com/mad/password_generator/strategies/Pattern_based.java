@@ -2,6 +2,7 @@ package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.models.PasswordStrategyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,18 +15,24 @@ import java.util.Random;
  *
  *     But : L’utilisateur définit un motif (ex : LLDDLL) pour Lettre, Lettre, Chiffre, etc.
  *
- *     Exemple de motif : LL-DD-### ⟶ Ab-CD-843
+ *     Exemples de motifs : LL-DD-### -> Ab-CD-843
+ *                          #DL-###-DD-LD -> 3Gh-337-PM-jV
  *
  *     Nécessite : un champ pattern dans le payload
  */
-@Component("PATTERN")
+@Component
 public class Pattern_based implements _PasswordGenerationStrategy {
     private static final Logger logger = LoggerFactory.getLogger(Pattern_based.class);
+    private static final Random random = new SecureRandom();
 
+    @Override
+    public PasswordStrategyType getStrategyType() {
+        return PasswordStrategyType.PATTERN;
+    }
     @Override
     public String generate(PasswordOptions options) {
     logger.info("Init generate from Pattern_based");
-        logger.info("Pattern récupéré: {}", options.getPattern());
+        //logger.info("Pattern récupéré: {}", options.getPattern());
 
         validateOptions(options);
 
@@ -34,6 +41,8 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     logger.info("Fin generate from Pattern_based");
         return generatedPasswordPattern;
     }
+
+
 
 
     //==============================  UTILITAIRES  ===========================================================
@@ -49,7 +58,6 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     }
     private String generatePasswordPattern(PasswordOptions options) {
         logger.info("Init generatedPasswordPattern");
-        Random random = new SecureRandom();
 
         StringBuilder upperSet = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         StringBuilder lowerSet = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
@@ -81,5 +89,9 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         logger.info("Fin generatedPasswordPattern");
     return passwordToGenerate.toString();
     }
+
+    //private char randomChar(String chars) {
+    //    return chars.charAt(random.nextInt(chars.length()));
+    //}
 
 }
