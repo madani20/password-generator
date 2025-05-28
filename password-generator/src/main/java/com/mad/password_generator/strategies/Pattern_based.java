@@ -44,7 +44,7 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         }
         String pattern = passwordOptions.getPattern();
         if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D")){
-            throw new InvalidPasswordOptionsException("Motif incorrect");
+            throw new InvalidPasswordOptionsException("Motif incorrect\n");
         }
     }
     private String generatePasswordPattern(PasswordOptions options) {
@@ -54,7 +54,6 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         StringBuilder upperSet = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         StringBuilder lowerSet = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
         StringBuilder digitSet = new StringBuilder("0123456789");
-        //StringBuilder specialSet = new StringBuilder("!@#$%^&*()-_=+[]{}");
 
         String chosenPattern = options.getPattern();
         StringBuilder passwordToGenerate = new StringBuilder(chosenPattern.length());

@@ -34,12 +34,12 @@ public class PasswordOptionsService {
      */
     public PasswordOptionsResponseDTO generate(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init generate()");
-        logger.info("Motif reçu: {}", passwordOptionsRequestDTO.getPattern());
+
         validateInput(passwordOptionsRequestDTO);
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
         logger.info(" Stratégie: {}", options.getStrategy());
-        logger.info("pattern {} ", options.getPattern());
+
         /* Sélection de la stratégie */
         _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getStrategy());
 
