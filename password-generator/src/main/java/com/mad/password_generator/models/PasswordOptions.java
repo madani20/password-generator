@@ -105,6 +105,10 @@ public final class PasswordOptions {
             this.allowedChars = allowedChars;
             return this;
         }
+        public Builder pattern(String pattern) {
+            this.pattern = pattern;
+            return this;
+        }
 
         public Builder prefix(String prefix) {
             this.prefix = prefix;

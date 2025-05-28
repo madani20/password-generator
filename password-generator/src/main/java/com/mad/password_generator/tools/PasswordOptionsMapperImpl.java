@@ -20,7 +20,7 @@ public class PasswordOptionsMapperImpl implements PasswordOptionsMapper{
                 //.allowRepeats(dto.isAllowRepeats())
                 .requireEachType(dto.isRequireEachType())
                 .strategy(dto.getStrategy())
-                //.pattern(dto.getPattern())
+                .pattern(dto.getPattern())
                 .prefix(dto.getPrefix())
                 .suffix(dto.getSuffix())
                 //.avoidWords(dto.getAvoidWords())

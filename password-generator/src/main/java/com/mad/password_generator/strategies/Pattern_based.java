@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 import java.util.Random;
 
-
 /**
  * PATTERN_BASED – Basé sur un motif utilisateur
  *
@@ -26,6 +25,7 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     @Override
     public String generate(PasswordOptions options) {
     logger.info("Init generate from Pattern_based");
+        logger.info("Pattern récupéré: {}", options.getPattern());
 
         validateOptions(options);
 
@@ -40,7 +40,11 @@ public class Pattern_based implements _PasswordGenerationStrategy {
 
     private void validateOptions(PasswordOptions passwordOptions) {
         if (passwordOptions.getPattern() == null || passwordOptions.getPattern().isEmpty()) {
-            throw new InvalidPasswordOptionsException("Un motif est requis pour la stratégie PATTERN");
+            throw new InvalidPasswordOptionsException("Un motif est requis pour la stratégie PATTERN \n");
+        }
+        String pattern = passwordOptions.getPattern();
+        if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D")){
+            throw new InvalidPasswordOptionsException("Motif incorrect");
         }
     }
     private String generatePasswordPattern(PasswordOptions options) {
@@ -49,31 +53,34 @@ public class Pattern_based implements _PasswordGenerationStrategy {
 
         StringBuilder upperSet = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         StringBuilder lowerSet = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
-        //StringBuilder specialSet = new StringBuilder("!@#$%^&*()-_=+[]{}");
         StringBuilder digitSet = new StringBuilder("0123456789");
+        //StringBuilder specialSet = new StringBuilder("!@#$%^&*()-_=+[]{}");
 
         String chosenPattern = options.getPattern();
-        StringBuilder generatedPassword = new StringBuilder(chosenPattern.length());
+        StringBuilder passwordToGenerate = new StringBuilder(chosenPattern.length());
 
         for(int i=0;i<chosenPattern.length();i++) {
             if(chosenPattern.charAt(i) == '-')
-                generatedPassword.append('-');
+                passwordToGenerate.append('-');
 
             else if (chosenPattern.charAt(i) == 'L') {
                 int j = random.nextInt(lowerSet.length());
-                generatedPassword.append(lowerSet.charAt(j));
+                passwordToGenerate.append(lowerSet.charAt(j));
 
             } else if (chosenPattern.charAt(i) == '#') {
                 int k = random.nextInt(digitSet.length());
-                generatedPassword.append(digitSet.append(k));
+                passwordToGenerate.append(digitSet.charAt(k));
 
             } else if (chosenPattern.charAt(i) == 'D') {
                 int l = random.nextInt(upperSet.length());
-                generatedPassword.append(upperSet.append(l));
+                passwordToGenerate.append(upperSet.charAt(l));
+            }
+            else {
+                throw new InvalidPasswordOptionsException("Invalid pattern\n");
             }
         }
         logger.info("Fin generatedPasswordPattern");
-    return generatedPassword.toString();
+    return passwordToGenerate.toString();
     }
 
 }
