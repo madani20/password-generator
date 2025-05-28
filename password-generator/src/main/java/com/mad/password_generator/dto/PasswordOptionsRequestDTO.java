@@ -11,21 +11,20 @@ import lombok.Setter;
 @Setter
 public class PasswordOptionsRequestDTO {
 
-    @Min(value = 6, message = "La longueur minimale est de 6 caractères.")
-    @Max(value = 128, message = "La longueur maximale est de 128 caractères")
-    @NotNull
+    //@Min(value = 6, message = "La longueur minimale est de 6 caractères.")
+    //@Max(value = 128, message = "La longueur maximale est de 128 caractères")
     private int length;
 
-    @NotNull
+
     private boolean includeUppercase = true;
 
-    @NotNull
+
     private boolean includeLowercase = true;
 
-    @NotNull
+
     private boolean includeDigits = true;
 
-    @NotNull
+
     private boolean includeSpecialChars = false;
 
     private boolean excludeSimilarChars = false;

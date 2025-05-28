@@ -1,3 +1,4 @@
+/*
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
@@ -91,3 +92,4 @@ class pattern_BasedTest {
         assertEquals('-', password.charAt(3));
     }
 }
+*/

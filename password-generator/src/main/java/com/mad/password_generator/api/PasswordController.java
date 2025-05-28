@@ -6,14 +6,12 @@ import com.mad.password_generator.services.PasswordOptionsService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+//@Validated
 @RestController
-@Validated
 @RequestMapping("/api")
 public class PasswordController {
     private static final Logger logger = LoggerFactory.getLogger(PasswordController.class);
@@ -25,7 +23,7 @@ public class PasswordController {
     }
 
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init PasswordController()");
         PasswordOptionsResponseDTO generatedPassword = passwordOptionsService.generate(passwordOptionsRequestDTO);
         logger.info("Fin PasswordController()");

@@ -51,6 +51,7 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         if (passwordOptions.getPattern() == null || passwordOptions.getPattern().isEmpty()) {
             throw new InvalidPasswordOptionsException("Un motif est requis pour la stratégie PATTERN \n");
         }
+
         String pattern = passwordOptions.getPattern();
         if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D")){
             throw new InvalidPasswordOptionsException("Motif incorrect\n");
@@ -58,6 +59,9 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     }
     private String generatePasswordPattern(PasswordOptions options) {
         logger.info("Init generatedPasswordPattern");
+
+        if(options.getPattern().length() < 6)
+            throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
 
         StringBuilder upperSet = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         StringBuilder lowerSet = new StringBuilder("abcdefghijklmnopqrstuvwxyz");

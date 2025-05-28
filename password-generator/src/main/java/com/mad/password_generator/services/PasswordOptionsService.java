@@ -63,22 +63,18 @@ public class PasswordOptionsService {
     private void validateInput(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
     logger.info("Init validateInput");
 
-        if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
-            throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
+        if(passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
+            if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
+                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
+            }
+       if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
+                throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
+                );
+            }
+            if (passwordOptionsRequestDTO.getStrategy() == null) {
+                throw new InvalidPasswordOptionsException("La stratégie de génération doit exister.");
+            }
         }
-        if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() &&
-                !passwordOptionsRequestDTO.isIncludeDigits() && !passwordOptionsRequestDTO.isIncludeSpecialChars()) {
-            throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné");
-        }
-
-        if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
-            throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
-            );
-        }
-        if (passwordOptionsRequestDTO.getStrategy() == null) {
-            throw new InvalidPasswordOptionsException("La stratégie de génération doit exister.");
-        }
-
         logger.info("Fin validateInput");
     }
 
@@ -86,8 +82,4 @@ public class PasswordOptionsService {
         return passwordOptionsRequestDTO.isIncludeUppercase() && passwordOptionsRequestDTO.isIncludeLowercase() && passwordOptionsRequestDTO.isIncludeDigits()
                 && passwordOptionsRequestDTO.isIncludeSpecialChars();
     }
-   /* private void notNullValidation(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-        if(passwordOptionsRequestDTO == null)
-            throw new InvalidPasswordOptionsException("Pas d'objet pour générer le mot de passe.");
-    }*/
-}
+  }

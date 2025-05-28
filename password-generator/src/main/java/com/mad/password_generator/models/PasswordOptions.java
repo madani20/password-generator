@@ -122,16 +122,14 @@ public final class PasswordOptions {
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
         public PasswordOptions build() {
-            // Validation simple
-            if (length < 4 || length > 120) {
-                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 4 et 120 caractères.");
-            }
-            if(!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars) {
-                throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
-            }
-            if (requireEachType && length < 4) {
-                throw new InvalidPasswordOptionsException("Impossible de satisfaire `requireEachType` avec une longueur inférieure à 4."
-                );
+            // L'option PATTERN peut fonctionner avec juste le champ strategy et pattern
+            if(this.strategy != PasswordStrategyType.PATTERN) {
+                if (length < 6 || length > 128) {
+                    throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
+                }
+                if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars) {
+                    throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
+                }
             }
             return new PasswordOptions(this);
         }
