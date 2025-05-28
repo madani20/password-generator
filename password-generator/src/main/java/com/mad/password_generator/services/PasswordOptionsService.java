@@ -47,9 +47,9 @@ public class PasswordOptionsService {
         String password = strategy.generate(options);
 
         /* Post-traitements le cas échéant */
-        password = passwordPostProcessorChain.apply(password, options);
+        String postProcessedPassword = passwordPostProcessorChain.apply(password, options);
 
-        PasswordOptionsResponseDTO generatedPassword = mapper.toResponseDTO(password);
+        PasswordOptionsResponseDTO generatedPassword = mapper.toResponseDTO(postProcessedPassword);
 
         logger.info("Fin generate()");
 
@@ -73,7 +73,7 @@ public class PasswordOptionsService {
         }
 
         if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
-            throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 4 caractères."
+            throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
             );
         }
         if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().isEmpty()) {

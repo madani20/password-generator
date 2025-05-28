@@ -27,7 +27,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
 
     @Override
     public String generate(PasswordOptions options) {
-        logger.info("Init generate() from random strategy");
+        logger.info("Init generate() from RANDOM strategy");
         StringBuilder charset = new StringBuilder();
 
         if (options.isIncludeUppercase()) charset.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -48,7 +48,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
             int index = random.nextInt(charset.length());
             result.append(charset.charAt(index));
         }
-        logger.info("Fin generate() from random strategy");
+        logger.info("Fin generate() from RANDOM strategy");
         return result.toString();
     }
 

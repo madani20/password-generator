@@ -15,6 +15,7 @@ public final class PasswordOptions {
     private final boolean requireEachType;
     private final String allowedChars;
     private final String strategy;
+    private final String pattern;
     private final String prefix;
     private final String suffix;
 
@@ -28,6 +29,7 @@ public final class PasswordOptions {
         this.excludeSimilarChars = builder.excludeSimilarChars;
         this.requireEachType = builder.requireEachType;
          this.strategy = builder.strategy;
+        this.pattern = builder.pattern;
         this.allowedChars = builder.allowedChars;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
@@ -44,6 +46,7 @@ public final class PasswordOptions {
     public boolean isRequireEachType() { return requireEachType; }
     public String getAllowedChars() { return allowedChars; }
     public String getStrategy() { return strategy; }
+    public String getPattern() { return pattern; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
 
@@ -59,7 +62,8 @@ public final class PasswordOptions {
         private boolean excludeSimilarChars = false;
         private boolean requireEachType = false;
         private String allowedChars;
-        private String strategy = "RANDOM_MIXED";
+        private String strategy = "RANDOM";
+        private String pattern;
         private String prefix;
         private String suffix;
 

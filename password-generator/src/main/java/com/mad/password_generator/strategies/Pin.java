@@ -1,12 +1,20 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * PIN – Code numérique
+ *
+ *     But : Générer un code PIN numérique, généralement court.
+ *
+ *     Ignore : tous les paramètres sauf length et includeDigits
+ *
+ *     Exemple : 8291
+ */
 @Component("PIN")
 public class Pin implements _PasswordGenerationStrategy{
 
@@ -17,13 +25,5 @@ public class Pin implements _PasswordGenerationStrategy{
 
         return "";
     }
-    /**
-     * PIN – Code numérique
-     *
-     *     But : Générer un code PIN numérique, généralement court.
-     *
-     *     Ignore : tous les paramètres sauf length et includeDigits
-     *
-     *     Exemple : 8291
-     */
+
 }
