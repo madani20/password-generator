@@ -17,12 +17,12 @@ public class PasswordOptionsService {
     private static final Logger logger = LoggerFactory.getLogger(PasswordOptionsService.class);
 
     private final PasswordOptionsMapper mapper;
-    private final PasswordPostProcessorChain postProcessorChain;
+    private final PasswordPostProcessorChain passwordPostProcessorChain;
     private final PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry;
 
     public PasswordOptionsService(PasswordOptionsMapper mapper, PasswordPostProcessorChain postProcessorChain, PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry) {
         this.mapper = mapper;
-        this.postProcessorChain = postProcessorChain;
+        this.passwordPostProcessorChain = postProcessorChain;
         this.passwordGenerationStrategyRegistry = passwordGenerationStrategyRegistry;
     }
 
@@ -38,7 +38,7 @@ public class PasswordOptionsService {
         validateInput(passwordOptionsRequestDTO);
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
-        logger.info(" Stratégie dans l'objet options mappé: {}", options.getStrategy());
+        logger.info(" Stratégie: {}", options.getStrategy());
 
         /* Sélection de la stratégie */
         _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getStrategy());
@@ -47,7 +47,7 @@ public class PasswordOptionsService {
         String password = strategy.generate(options);
 
         /* Post-traitements le cas échéant */
-        password = postProcessorChain.apply(password, options);
+        password = passwordPostProcessorChain.apply(password, options);
 
         PasswordOptionsResponseDTO generatedPassword = mapper.toResponseDTO(password);
 

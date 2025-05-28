@@ -1,6 +1,9 @@
 package com.mad.password_generator.strategies;
 
 import com.mad.password_generator.models.PasswordOptions;
+import com.mad.password_generator.services.PasswordOptionsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +21,13 @@ import java.util.Random;
  */
 @Component("RANDOM")
 public class Random_mixed implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(Random_mixed.class);
 
     private final Random random = new SecureRandom();
 
     @Override
     public String generate(PasswordOptions options) {
+        logger.info("Init generate() from random strategy");
         StringBuilder charset = new StringBuilder();
 
         if (options.isIncludeUppercase()) charset.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -43,6 +48,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
             int index = random.nextInt(charset.length());
             result.append(charset.charAt(index));
         }
+        logger.info("Fin generate() from random strategy");
         return result.toString();
     }
 

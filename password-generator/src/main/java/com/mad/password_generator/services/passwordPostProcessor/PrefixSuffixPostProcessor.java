@@ -1,7 +1,9 @@
 package com.mad.password_generator.services.passwordPostProcessor;
 
 import com.mad.password_generator.models.PasswordOptions;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PrefixSuffixPostProcessor implements PasswordPostProcessor {
 
     @Override
