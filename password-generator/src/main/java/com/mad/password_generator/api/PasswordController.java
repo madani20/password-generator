@@ -2,8 +2,13 @@ package com.mad.password_generator.api;
 
 import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
+import com.mad.password_generator.models.ErrorResponse;
 import com.mad.password_generator.services.PasswordOptionsService;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +27,25 @@ public class PasswordController {
         this.passwordOptionsService = passwordOptionsService;
     }
 
+    /**
+     * Endpoint pour la génération d'un mot de passe.
+     *
+     *
+     * @param passwordOptionsRequestDTO contient les options disponibles pour la génération du mot de passe.
+     * @return Le mot de passe.
+     */
+    @Operation(summary = "Generate a password", description = "Allows a user to generate a password according to a chosen strategy")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                         description = "Password generated successfully.",
+                         content = @Content(mediaType = "application/json",  schema = @Schema(implementation = PasswordOptionsResponseDTO.class))),
+            @ApiResponse(responseCode = "400",
+                         description = "Requête invalide ou données manquantes",
+                         content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500",
+                         description = "Erreur interne du serveur",
+                         content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
     public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init PasswordController()");

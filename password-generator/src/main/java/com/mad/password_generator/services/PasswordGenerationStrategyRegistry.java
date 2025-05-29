@@ -31,8 +31,8 @@ public class PasswordGenerationStrategyRegistry {
         _PasswordGenerationStrategy strategy = strategies.get(strategyType);
         logger.info("Clés disponibles dans strategies: {}", strategies.keySet());
 
-        if (strategy == null)
-            throw new StrategyNotFoundException("Stratégie '" + strategyType + "' inconnue");
+        if (strategy == null || strategyType.toString().isEmpty())
+            throw new StrategyNotFoundException("Stratégie '" + strategyType + "' inconnue!");
 
         logger.info("Fin getStrategy()");
         return strategy;
