@@ -43,8 +43,6 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     }
 
 
-
-
     //==============================  UTILITAIRES  ===========================================================
 
     private void validateOptions(PasswordOptions passwordOptions) {
