@@ -24,6 +24,7 @@ public class PasswordOptionsRequestDTO {
 
     private boolean includeDigits = true;
 
+    private boolean includeDash = true;
 
     private boolean includeSpecialChars = false;
 

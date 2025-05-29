@@ -51,7 +51,7 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         }
 
         String pattern = passwordOptions.getPattern();
-        if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D")){
+        if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D") && !pattern.contains("-")){
             throw new InvalidPasswordOptionsException("Motif incorrect\n");
         }
     }

@@ -11,6 +11,7 @@ public final class PasswordOptions {
     private final boolean includeLowercase;
     private final boolean includeDigits;
     private final boolean includeSpecialChars;
+    private final boolean includeDash;
     private final boolean excludeSimilarChars;
     private final boolean requireEachType;
     private final String allowedChars;
@@ -26,6 +27,7 @@ public final class PasswordOptions {
         this.includeLowercase = builder.includeLowercase;
         this.includeDigits = builder.includeDigits;
         this.includeSpecialChars = builder.includeSpecialChars;
+        this.includeDash = builder.includeDash;
         this.excludeSimilarChars = builder.excludeSimilarChars;
         this.requireEachType = builder.requireEachType;
         this.passwordStrategyType = builder.strategy;
@@ -43,6 +45,7 @@ public final class PasswordOptions {
     public boolean isIncludeLowercase() { return includeLowercase; }
     public boolean isIncludeDigits() { return includeDigits; }
     public boolean isIncludeSpecialChars() { return includeSpecialChars; }
+    public boolean isIncludeDash() { return includeDash; }
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
     public boolean isRequireEachType() { return requireEachType; }
     public String getAllowedChars() { return allowedChars; }
@@ -60,10 +63,11 @@ public final class PasswordOptions {
         private boolean includeLowercase = true;
         private boolean includeDigits = true;
         private boolean includeSpecialChars = false;
+        private boolean includeDash = true;
         private boolean excludeSimilarChars = false;
         private boolean requireEachType = false;
         private String allowedChars;
-        private PasswordStrategyType strategy = null;
+        private PasswordStrategyType strategy = PasswordStrategyType.RANDOM;
         private String pattern;
         private String prefix;
         private String suffix;
@@ -88,6 +92,10 @@ public final class PasswordOptions {
         }
         public Builder includeSpecialChars(boolean value) {
             this.includeSpecialChars = value;
+            return this;
+        }
+        public Builder includeDash(boolean value) {
+            this.includeDash = value;
             return this;
         }
         public Builder excludeSimilarChars(boolean value) {
@@ -127,7 +135,7 @@ public final class PasswordOptions {
                 if (length < 6 || length > 128) {
                     throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
                 }
-                if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars) {
+                if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars && !includeDash) {
                     throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
                 }
             }
