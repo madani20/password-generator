@@ -4,7 +4,7 @@ package com.mad.password_generator.models;
 public enum PasswordStrategyType {
     RANDOM("Génération aléatoire mixée"),
     PATTERN("Génération basée sur un motif"),
-    PIN("Génération d'un code numérique"),
+    PIN("Génération aléatoire d'un code numérique"),
     PASS_PHRASE("Génération via une phrase mémorable");
 
 

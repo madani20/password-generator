@@ -2,7 +2,7 @@ package com.mad.password_generator.api;
 
 import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
-import com.mad.password_generator.dto.PasswordStrategyDTO;
+import com.mad.password_generator.dto.PasswordStrategyResponseDTO;
 import com.mad.password_generator.models.ErrorResponse;
 import com.mad.password_generator.services.PasswordOptionsService;
 import com.mad.password_generator.services.PasswordStrategyService;
@@ -79,10 +79,37 @@ public class PasswordController {
         logger.info("Fin PasswordController()");
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
+
+
+    /**
+     * Endpoint qui renvoie la liste des stratégies disponibles.
+     *
+     *
+     * @return liste des stratégies
+     */
+    @Operation(
+            summary = "Returns the list of existing strategies.",
+            description = "Returns the list of existing strategies to choose from for password generation",
+            operationId = "listOfStrategies"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of available strategies.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PasswordStrategyResponseDTO.class)
+                            )),
+           @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping(value = "/strategies")
-    public ResponseEntity<List<PasswordStrategyDTO>> getStrategies() {
+    public ResponseEntity<List<PasswordStrategyResponseDTO>> getStrategies() {
         logger.info("Init getStrategies");
-        List<PasswordStrategyDTO> strategies = passwordStrategyService.getAllStrategies();
+        List<PasswordStrategyResponseDTO> strategies = passwordStrategyService.getAllStrategies();
         logger.info("Fin getStrategies");
         return ResponseEntity.ok(strategies);
     }

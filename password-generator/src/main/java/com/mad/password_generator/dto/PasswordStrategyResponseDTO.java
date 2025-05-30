@@ -1,11 +1,11 @@
 package com.mad.password_generator.dto;
 
-public class PasswordStrategyDTO {
+public class PasswordStrategyResponseDTO {
 
     private String name;
     private String description;
 
-    public PasswordStrategyDTO(String name, String description) {
+    public PasswordStrategyResponseDTO(String name, String description) {
         this.name = name;
         this.description = description;
     }
