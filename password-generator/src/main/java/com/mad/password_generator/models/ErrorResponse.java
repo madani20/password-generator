@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Generic error response")
 public class ErrorResponse {
 
-    @Schema( description = "Error message", example = "La longueur du mot de passe doit être comprise entre 6 et 128 caractères.")
+    @Schema( description = "Error message", example = "Password length must be between 6 and 128 characters.")
     private String message;
 
     public ErrorResponse() {    }
