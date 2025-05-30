@@ -52,22 +52,25 @@ class Pattern_basedTest {
 
     @Test
     void testGenerate_shouldThrowExceptionWhenPatternIsEmpty() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("")
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
+       assertThrows(InvalidPasswordOptionsException.class, () -> {
+           PasswordOptions options = PasswordOptions.builder()
+                   .pattern("")
+                   .strategy(PasswordStrategyType.PATTERN)
+                   .build();
 
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+           patternStrategy.generate(options);
+       });
     }
 
     @Test
     void testGenerate_shouldThrowExceptionForEmptyPatternWithWhitespace() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("   ") // string non null mais inutile
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern("   ") // string non null mais inutile
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+            patternStrategy.generate(options);
+        });
     }
 
     @Test
@@ -93,22 +96,24 @@ class Pattern_basedTest {
 
     @Test
     void testGenerate_shouldThrowExceptionForPatternWithSingleInvalidSymbol() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("X") // caractère non reconnu
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern("X") // caractère non reconnu
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+            patternStrategy.generate(options);
+        });
     }
 
     @Test
     void testGenerate_shouldThrowExceptionForLowercasePatternSymbols() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("l#d") // minuscules: non gérés
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern("l#d") // minuscules: non gérés
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+            patternStrategy.generate(options);
+        });
     }
 
     @Test
@@ -231,22 +236,28 @@ class Pattern_basedTest {
 
     @Test
     void testGenerate_shouldThrowExceptionWhenPatternHasNoRecognizedSymbol() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("XXX")
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
 
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern("XXX")
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+
+            patternStrategy.generate(options);
+        });
     }
 
     @Test
     void testGenerate_shouldThrowExceptionWhenPatternContainsInvalidCharacter() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("L#D*") // '*' is not handled
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
 
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern("L#D*") // '*' is not handled
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+
+            patternStrategy.generate(options);
+        });
     }
 
     @Test

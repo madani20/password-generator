@@ -50,6 +50,9 @@ public class Pattern_based implements _PasswordGenerationStrategy {
         if(passwordOptions == null)
         throw new InvalidPasswordOptionsException("Aucune options!");
 
+        if(passwordOptions.getPattern() == null || passwordOptions.getPattern().isBlank())
+            throw new InvalidPasswordOptionsException("Un patron est requis pour cette stratégie");
+
         String pattern = passwordOptions.getPattern();
 
         if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D") && !pattern.contains("-")){

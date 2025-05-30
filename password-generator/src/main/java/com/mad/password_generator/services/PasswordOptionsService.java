@@ -64,11 +64,9 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO == null)
             throw new InvalidPasswordOptionsException("Pas d'objet requête");
 
-        if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
-                throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
-            }
-        if (passwordOptionsRequestDTO.getStrategy() == null) {
-                throw new InvalidPasswordOptionsException("La stratégie doit exister.");
+
+        if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().toString().isBlank()) {
+                throw new InvalidPasswordOptionsException("Une stratégie de génération est requise.");
             }
        logger.info("Fin validateInput");
     }
