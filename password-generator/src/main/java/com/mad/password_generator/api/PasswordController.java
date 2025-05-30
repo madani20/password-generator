@@ -40,10 +40,10 @@ public class PasswordController {
                          description = "Password generated successfully.",
                          content = @Content(mediaType = "application/json",  schema = @Schema(implementation = PasswordOptionsResponseDTO.class))),
             @ApiResponse(responseCode = "400",
-                         description = "Requête invalide ou données manquantes",
+                         description = "Invalid request or missing data. Detailed error message in the response.",
                          content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500",
-                         description = "Erreur interne du serveur",
+                         description = "Internal Server Error",
                          content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
@@ -54,10 +54,6 @@ public class PasswordController {
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
   }
-
-
-
-
 
 // GET /api/strategies    Retourne la liste des stratégies disponibles.
 // GET /api/password/strength?value=...   Analyse la force d’un mot de passe donné.

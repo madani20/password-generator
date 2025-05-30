@@ -46,13 +46,14 @@ public final class PasswordOptions {
     public boolean isIncludeDigits() { return includeDigits; }
     public boolean isIncludeSpecialChars() { return includeSpecialChars; }
     public boolean isIncludeDash() { return includeDash; }
-    public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
-    public boolean isRequireEachType() { return requireEachType; }
-    public String getAllowedChars() { return allowedChars; }
     public PasswordStrategyType getPasswordStrategyType() { return passwordStrategyType;}
     public String getPattern() { return pattern; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
+
+    public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
+    public boolean isRequireEachType() { return requireEachType; }
+    public String getAllowedChars() { return allowedChars; }
 
     public static Builder builder() {
         return new Builder();
@@ -64,13 +65,15 @@ public final class PasswordOptions {
         private boolean includeDigits = true;
         private boolean includeSpecialChars = false;
         private boolean includeDash = true;
-        private boolean excludeSimilarChars = false;
-        private boolean requireEachType = false;
-        private String allowedChars;
         private PasswordStrategyType strategy = PasswordStrategyType.RANDOM;
         private String pattern;
         private String prefix;
         private String suffix;
+
+        private boolean excludeSimilarChars = false;
+        private boolean requireEachType = false;
+        private String allowedChars;
+
 
         // === MÉTHODES DE CONFIGURATION ===
 
@@ -130,14 +133,16 @@ public final class PasswordOptions {
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
         public PasswordOptions build() {
-            // L'option PATTERN peut fonctionner avec juste le champ strategy et pattern
+           // L'option PATTERN peut fonctionner avec juste le champ strategy et pattern
             if(this.strategy != PasswordStrategyType.PATTERN) {
                 if (length < 6 || length > 128) {
-                    throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
+                    throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères!");
                 }
                 if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars && !includeDash) {
-                    throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné.");
+                    throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
                 }
+            } else if (this.strategy == null) {
+                throw new InvalidPasswordOptionsException("Le pattern doit exister pour former le mot de passe.");
             }
             return new PasswordOptions(this);
         }

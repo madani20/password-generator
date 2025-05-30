@@ -39,6 +39,7 @@ public class PasswordOptionsService {
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
 
+
         /* Sélection de la stratégie */
         _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getPasswordStrategyType());
 
@@ -56,23 +57,27 @@ public class PasswordOptionsService {
     }
 
 
-
-
     //=============================== METHODES UTILITAIRES =========================================================
 
     private void validateInput(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-    logger.info("Init validateInput");
+        logger.info("Init validateInput");
 
-        if(passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
+        if (passwordOptionsRequestDTO == null)
+            throw new InvalidPasswordOptionsException("Pas d'objet requête");
+
+        if(hasStrategy(passwordOptionsRequestDTO))
+            throw new InvalidPasswordOptionsException("Une stratégie est nécessaire.");
+
+        if (passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
             if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
                 throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
             }
-       if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
+            if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
                 throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
                 );
             }
             if (passwordOptionsRequestDTO.getStrategy() == null) {
-                throw new InvalidPasswordOptionsException("La stratégie de génération doit exister.");
+                throw new InvalidPasswordOptionsException("La stratégie doit exister.");
             }
         }
         logger.info("Fin validateInput");
@@ -80,6 +85,10 @@ public class PasswordOptionsService {
 
     private boolean requiredEachType(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         return passwordOptionsRequestDTO.isIncludeUppercase() && passwordOptionsRequestDTO.isIncludeLowercase() && passwordOptionsRequestDTO.isIncludeDigits()
-                && passwordOptionsRequestDTO.isIncludeSpecialChars();
+                && passwordOptionsRequestDTO.isIncludeSpecialChars() && passwordOptionsRequestDTO.isIncludeDash();
     }
-  }
+
+    private boolean hasStrategy(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+        return passwordOptionsRequestDTO.getStrategy() != null;
+    }
+}

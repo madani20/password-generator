@@ -1,5 +1,6 @@
 package com.mad.password_generator.strategies;
 
+import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
 import com.mad.password_generator.models.PasswordStrategyType;
@@ -46,20 +47,26 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     //==============================  UTILITAIRES  ===========================================================
 
     private void validateOptions(PasswordOptions passwordOptions) {
-        if (passwordOptions.getPattern() == null || passwordOptions.getPattern().isEmpty()) {
-            throw new InvalidPasswordOptionsException("Un motif est requis pour la stratégie PATTERN \n");
-        }
+
+        if(!hasStrategyAndPattern(passwordOptions))
+            throw new InvalidPasswordOptionsException("Options requises manquantes.");
+
+        if(passwordOptions.getPattern().length() < 6)
+            throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
 
         String pattern = passwordOptions.getPattern();
+
         if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D") && !pattern.contains("-")){
             throw new InvalidPasswordOptionsException("Motif incorrect\n");
         }
     }
+
+    private boolean hasStrategyAndPattern(PasswordOptions passwordOptions) {
+        return passwordOptions.getPasswordStrategyType() == PasswordStrategyType.PATTERN || !passwordOptions.getPattern().isBlank();
+    }
+
     private String generatePasswordPattern(PasswordOptions options) {
         logger.info("Init generatedPasswordPattern");
-
-        if(options.getPattern().length() < 6)
-            throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
 
         StringBuilder upperSet = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         StringBuilder lowerSet = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
@@ -85,7 +92,7 @@ public class Pattern_based implements _PasswordGenerationStrategy {
                 passwordToGenerate.append(upperSet.charAt(l));
             }
             else {
-                throw new InvalidPasswordOptionsException("Invalid pattern\n");
+                throw new InvalidPasswordOptionsException("Pattern invalide.\n");
             }
         }
         logger.info("Fin generatedPasswordPattern");

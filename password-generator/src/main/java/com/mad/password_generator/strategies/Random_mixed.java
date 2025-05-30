@@ -40,6 +40,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
         if (options.isIncludeDigits()) charset.append("0123456789");
         if (options.isIncludeSpecialChars()) charset.append("!@#$%^&*()-_=+[]{}");
 
+        // Si alphabet fourni
         if (options.getAllowedChars() != null) {
             charset = new StringBuilder(options.getAllowedChars());
         }

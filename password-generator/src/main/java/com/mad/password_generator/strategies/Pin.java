@@ -32,4 +32,5 @@ public class Pin implements _PasswordGenerationStrategy{
         return PasswordStrategyType.PIN;
     }
 
+
 }

@@ -29,27 +29,31 @@ public class Random_mixedTest {
         assertTrue(password.matches("^[a-zA-Z0-9]+$"));
     }
 
-    @Test
     @DisplayName("Should throw exception for length < 6")
-    void testGenerate_shouldThrowExceptionForLengthTooShort() {
-        PasswordOptions options = PasswordOptions.builder()
-                .length(5)
-                .strategy(PasswordStrategyType.RANDOM)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> strategy.generate(options));
-    }
-
     @Test
-    @DisplayName("Should throw exception for length > 128")
-    void testGenerate_shouldThrowExceptionForLengthTooLong() {
-        PasswordOptions options = PasswordOptions.builder()
-                .length(129)
-                .strategy(PasswordStrategyType.RANDOM)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> strategy.generate(options));
+    void testGenerate_shouldThrowExceptionForLengthTooShort() {
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .length(5)
+                    .strategy(PasswordStrategyType.RANDOM)
+                    .build();
+            strategy.generate(options);
+        });
     }
+
+
+    @DisplayName("Should throw exception for length > 128")
+    @Test
+    void testGenerate_shouldThrowExceptionForLengthTooLong() {
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .length(129)
+                    .strategy(PasswordStrategyType.RANDOM)
+                    .build();
+            strategy.generate(options);
+        });
+    }
+
 
     @Test
     @DisplayName("Should generate only lowercase characters")
@@ -98,16 +102,18 @@ public class Random_mixedTest {
     @Test
     @DisplayName("Should throw exception if all char types are excluded")
     void testGenerate_shouldThrowExceptionWhenNoCharTypeIncluded() {
-        PasswordOptions options = PasswordOptions.builder()
-                .length(10)
-                .includeLowercase(false)
-                .includeUppercase(false)
-                .includeDigits(false)
-                .includeDash(false)
-                .strategy(PasswordStrategyType.RANDOM)
-                .build();
 
-        assertThrows(InvalidPasswordOptionsException.class, () -> strategy.generate(options));
+        assertThrows(InvalidPasswordOptionsException.class, () -> {
+                    PasswordOptions options = PasswordOptions.builder()
+                            .length(10)
+                            .includeLowercase(false)
+                            .includeUppercase(false)
+                            .includeDigits(false)
+                            .includeDash(false)
+                            .strategy(PasswordStrategyType.RANDOM)
+                            .build();
+                    strategy.generate(options);
+                });
     }
 
     @Test

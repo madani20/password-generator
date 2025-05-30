@@ -18,9 +18,7 @@ public class PasswordOptionsRequestDTO {
 
     private boolean includeUppercase = true;
 
-
     private boolean includeLowercase = true;
-
 
     private boolean includeDigits = true;
 

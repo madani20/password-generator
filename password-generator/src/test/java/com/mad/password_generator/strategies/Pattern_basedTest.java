@@ -41,12 +41,13 @@ class Pattern_basedTest {
     @Test
     @DisplayName("Should Throw Exception When Pattern Is Null")
     void testGenerate_shouldThrowExceptionWhenPatternIsNull() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern(null)
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
-
-        assertThrows(InvalidPasswordOptionsException.class, () -> patternStrategy.generate(options));
+          assertThrows(InvalidPasswordOptionsException.class, () -> {
+            PasswordOptions options = PasswordOptions.builder()
+                    .pattern(null)
+                    .strategy(PasswordStrategyType.PATTERN)
+                    .build();
+            patternStrategy.generate(options);
+        });
     }
 
     @Test
