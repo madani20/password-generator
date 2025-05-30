@@ -1,6 +1,5 @@
 package com.mad.password_generator.strategies;
 
-import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
 import com.mad.password_generator.models.PasswordStrategyType;
@@ -22,8 +21,8 @@ import java.util.Random;
  *     Nécessite : un champ pattern dans le payload
  */
 @Component
-public class Pattern_based implements _PasswordGenerationStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(Pattern_based.class);
+public class Pattern_basedStrategy implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(Pattern_basedStrategy.class);
     private static final Random random = new SecureRandom();
 
     @Override
@@ -33,13 +32,13 @@ public class Pattern_based implements _PasswordGenerationStrategy {
 
     @Override
     public String generate(PasswordOptions options) {
-    logger.info("Init generate from Pattern_based");
+    logger.info("Init generate from Pattern_basedStrategy");
 
         validateOptions(options);
 
         String generatedPasswordPattern = generatePasswordPattern(options);
 
-    logger.info("Fin generate from Pattern_based");
+    logger.info("Fin generate from Pattern_basedStrategy");
         return generatedPasswordPattern;
     }
 

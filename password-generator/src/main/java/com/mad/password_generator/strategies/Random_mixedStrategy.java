@@ -3,10 +3,8 @@ package com.mad.password_generator.strategies;
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
 import com.mad.password_generator.models.PasswordStrategyType;
-import com.mad.password_generator.services.PasswordOptionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -22,8 +20,8 @@ import java.util.Random;
  *     Exemple : 3@Pfw$LmN9q#
  */
 @Component
-public class Random_mixed implements _PasswordGenerationStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(Random_mixed.class);
+public class Random_mixedStrategy implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(Random_mixedStrategy.class);
 
     private final Random random = new SecureRandom();
 

@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Random_mixedTest {
+public class Random_mixedStrategyTest {
 
-    private final Random_mixed strategy = new Random_mixed();
+    private final Random_mixedStrategy strategy = new Random_mixedStrategy();
 
     @Test
     @DisplayName("Should generate password with length = 8 (default valid case)")

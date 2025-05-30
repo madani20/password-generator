@@ -2,8 +2,10 @@ package com.mad.password_generator.api;
 
 import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
+import com.mad.password_generator.dto.PasswordStrategyDTO;
 import com.mad.password_generator.models.ErrorResponse;
 import com.mad.password_generator.services.PasswordOptionsService;
+import com.mad.password_generator.services.PasswordStrategyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -18,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RestController
 @RequestMapping("/api")
@@ -25,9 +29,11 @@ public class PasswordController {
     private static final Logger logger = LoggerFactory.getLogger(PasswordController.class);
 
     private final PasswordOptionsService passwordOptionsService;
+    private final PasswordStrategyService passwordStrategyService;
 
-    public PasswordController(PasswordOptionsService passwordOptionsService) {
+    public PasswordController(PasswordOptionsService passwordOptionsService, PasswordStrategyService passwordStrategyService) {
         this.passwordOptionsService = passwordOptionsService;
+        this.passwordStrategyService = passwordStrategyService;
     }
 
     /**
@@ -73,7 +79,13 @@ public class PasswordController {
         logger.info("Fin PasswordController()");
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
+    @GetMapping(value = "/strategies")
+    public ResponseEntity<List<PasswordStrategyDTO>> getStrategies() {
+        logger.info("Init getStrategies");
+        List<PasswordStrategyDTO> strategies = passwordStrategyService.getAllStrategies();
+        logger.info("Fin getStrategies");
+        return ResponseEntity.ok(strategies);
+    }
   }
 
-// GET /api/strategies    Retourne la liste des stratégies disponibles.
 // GET /api/password/strength?value=...   Analyse la force d’un mot de passe donné.

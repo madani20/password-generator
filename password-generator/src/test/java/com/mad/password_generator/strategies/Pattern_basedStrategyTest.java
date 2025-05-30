@@ -12,13 +12,13 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Pattern_basedTest {
+class Pattern_basedStrategyTest {
 
-    private Pattern_based patternStrategy;
+    private Pattern_basedStrategy patternStrategy;
 
     @BeforeEach
     void setup() {
-        patternStrategy = new Pattern_based();
+        patternStrategy = new Pattern_basedStrategy();
     }
 
     @Test
