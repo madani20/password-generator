@@ -39,7 +39,6 @@ public class PasswordOptionsService {
 
         PasswordOptions options = mapper.fromRequest(passwordOptionsRequestDTO);
 
-
         /* Sélection de la stratégie */
         _PasswordGenerationStrategy strategy = passwordGenerationStrategyRegistry.getStrategy(options.getPasswordStrategyType());
 
@@ -65,22 +64,13 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO == null)
             throw new InvalidPasswordOptionsException("Pas d'objet requête");
 
-        if(hasStrategy(passwordOptionsRequestDTO))
-            throw new InvalidPasswordOptionsException("Une stratégie est nécessaire.");
-
-        if (passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
-            if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
+        if (passwordOptionsRequestDTO.getLength() < 6 || passwordOptionsRequestDTO.getLength() > 128) {
                 throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
             }
-            if (requiredEachType(passwordOptionsRequestDTO) && passwordOptionsRequestDTO.getLength() < 6) {
-                throw new InvalidPasswordOptionsException("Impossible de satisfaire l'option `requireEachType` avec une longueur inférieure à 6 caractères."
-                );
-            }
-            if (passwordOptionsRequestDTO.getStrategy() == null) {
+        if (passwordOptionsRequestDTO.getStrategy() == null) {
                 throw new InvalidPasswordOptionsException("La stratégie doit exister.");
             }
-        }
-        logger.info("Fin validateInput");
+       logger.info("Fin validateInput");
     }
 
     private boolean requiredEachType(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
@@ -88,7 +78,7 @@ public class PasswordOptionsService {
                 && passwordOptionsRequestDTO.isIncludeSpecialChars() && passwordOptionsRequestDTO.isIncludeDash();
     }
 
-    private boolean hasStrategy(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-        return passwordOptionsRequestDTO.getStrategy() != null;
-    }
+//    private boolean hasStrategy(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+//        return passwordOptionsRequestDTO.getStrategy() != null;
+//    }
 }

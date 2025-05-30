@@ -33,6 +33,7 @@ public class Random_mixed implements _PasswordGenerationStrategy {
     @Override
     public String generate(PasswordOptions options) {
         logger.info("Init generate() from RANDOM strategy");
+
         StringBuilder charset = new StringBuilder();
 
         if (options.isIncludeUppercase()) charset.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");

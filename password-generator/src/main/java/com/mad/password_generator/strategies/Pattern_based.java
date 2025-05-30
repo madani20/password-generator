@@ -30,10 +30,10 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     public PasswordStrategyType getStrategyType() {
         return PasswordStrategyType.PATTERN;
     }
+
     @Override
     public String generate(PasswordOptions options) {
     logger.info("Init generate from Pattern_based");
-        //logger.info("Pattern récupéré: {}", options.getPattern());
 
         validateOptions(options);
 
@@ -47,22 +47,14 @@ public class Pattern_based implements _PasswordGenerationStrategy {
     //==============================  UTILITAIRES  ===========================================================
 
     private void validateOptions(PasswordOptions passwordOptions) {
-
-        if(!hasStrategyAndPattern(passwordOptions))
-            throw new InvalidPasswordOptionsException("Options requises manquantes.");
-
-        if(passwordOptions.getPattern().length() < 6)
-            throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
+        if(passwordOptions == null)
+        throw new InvalidPasswordOptionsException("Aucune options!");
 
         String pattern = passwordOptions.getPattern();
 
         if(!pattern.contains("#") && !pattern.contains("L") && !pattern.contains("D") && !pattern.contains("-")){
             throw new InvalidPasswordOptionsException("Motif incorrect\n");
         }
-    }
-
-    private boolean hasStrategyAndPattern(PasswordOptions passwordOptions) {
-        return passwordOptions.getPasswordStrategyType() == PasswordStrategyType.PATTERN || !passwordOptions.getPattern().isBlank();
     }
 
     private String generatePasswordPattern(PasswordOptions options) {
@@ -92,12 +84,22 @@ public class Pattern_based implements _PasswordGenerationStrategy {
                 passwordToGenerate.append(upperSet.charAt(l));
             }
             else {
-                throw new InvalidPasswordOptionsException("Pattern invalide.\n");
+                throw new InvalidPasswordOptionsException("Pattern invalide. Les caractères valides sont: '-', 'L', '#', 'D'\n");
             }
         }
         logger.info("Fin generatedPasswordPattern");
     return passwordToGenerate.toString();
     }
+
+    // if(!hasStrategyAndPattern(passwordOptions))
+    //     throw new InvalidPasswordOptionsException("Options requises manquantes.");
+
+    //  if(passwordOptions.getPattern().length() < 6)
+    //      throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
+
+    //  private boolean hasStrategyAndPattern(PasswordOptions passwordOptions) {
+   //     return passwordOptions.getPasswordStrategyType() == PasswordStrategyType.PATTERN && !passwordOptions.getPattern().isBlank();
+   // }
 
     //private char randomChar(String chars) {
     //    return chars.charAt(random.nextInt(chars.length()));

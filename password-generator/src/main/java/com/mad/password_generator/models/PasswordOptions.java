@@ -133,18 +133,19 @@ public final class PasswordOptions {
 
         // === MÉTHODE FINALE POUR CONSTRUIRE ===
         public PasswordOptions build() {
-           // L'option PATTERN peut fonctionner avec juste le champ strategy et pattern
-            if(this.strategy != PasswordStrategyType.PATTERN) {
-                if (length < 6 || length > 128) {
-                    throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères!");
-                }
-                if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars && !includeDash) {
-                    throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
-                }
-            } else if (this.strategy == null) {
-                throw new InvalidPasswordOptionsException("Le pattern doit exister pour former le mot de passe.");
-            }
-            return new PasswordOptions(this);
+           if(strategy==null)
+               throw new InvalidPasswordOptionsException("Une stratégie est nécessaire ici");
+
+           if(pattern==null)
+               throw new InvalidPasswordOptionsException("Un pattern doit être fourni");
+
+           if(pattern.isEmpty() || pattern.length() < 6)
+               throw new InvalidPasswordOptionsException("Motif pattern incorrect!");
+
+           if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars && !includeDash) {
+               throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
+           }
+           return new PasswordOptions(this);
         }
     }
 }
