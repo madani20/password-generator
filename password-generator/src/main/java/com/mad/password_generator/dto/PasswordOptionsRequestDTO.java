@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 public class PasswordOptionsRequestDTO {
 
-    //@Min(value = 6, message = "La longueur minimale est de 6 caractères.")
-    //@Max(value = 128, message = "La longueur maximale est de 128 caractères")
+    @Min(value = 6, message = "La longueur minimale est de 6 caractères.")
+    @Max(value = 128, message = "La longueur maximale est de 128 caractères")
     private int length;
 
 

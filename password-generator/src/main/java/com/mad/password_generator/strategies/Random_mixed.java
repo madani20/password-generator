@@ -1,5 +1,6 @@
 package com.mad.password_generator.strategies;
 
+import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
 import com.mad.password_generator.models.PasswordStrategyType;
 import com.mad.password_generator.services.PasswordOptionsService;
@@ -41,13 +42,12 @@ public class Random_mixed implements _PasswordGenerationStrategy {
         if (options.isIncludeDigits()) charset.append("0123456789");
         if (options.isIncludeSpecialChars()) charset.append("!@#$%^&*()-_=+[]{}");
 
-        // Si alphabet fourni
         if (options.getAllowedChars() != null) {
             charset = new StringBuilder(options.getAllowedChars());
         }
 
         if (charset.isEmpty()) {
-            throw new IllegalArgumentException("Aucun caractère sélectionné.");
+            throw new InvalidPasswordOptionsException("Aucun caractère sélectionné.");
         }
 
         StringBuilder result = new StringBuilder();

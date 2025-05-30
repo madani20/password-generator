@@ -102,19 +102,18 @@ public class Random_mixedTest {
     @Test
     @DisplayName("Should throw exception if all char types are excluded")
     void testGenerate_shouldThrowExceptionWhenNoCharTypeIncluded() {
+        PasswordOptions options = PasswordOptions.builder()
+                .length(10)
+                .includeLowercase(false)
+                .includeUppercase(false)
+                .includeDigits(false)
+                .includeDash(false)
+                .strategy(PasswordStrategyType.RANDOM)
+                .build();
 
-        assertThrows(InvalidPasswordOptionsException.class, () -> {
-                    PasswordOptions options = PasswordOptions.builder()
-                            .length(10)
-                            .includeLowercase(false)
-                            .includeUppercase(false)
-                            .includeDigits(false)
-                            .includeDash(false)
-                            .strategy(PasswordStrategyType.RANDOM)
-                            .build();
-                    strategy.generate(options);
-                });
-    }
+        assertThrows(InvalidPasswordOptionsException.class, () -> strategy.generate(options));
+    };
+
 
     @Test
     @DisplayName("Should generate different passwords each time")

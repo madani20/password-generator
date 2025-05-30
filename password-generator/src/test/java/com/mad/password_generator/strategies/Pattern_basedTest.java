@@ -128,32 +128,25 @@ class Pattern_basedTest {
 
 
     @Test
-    @DisplayName("Should ignore other options and only use pattern length = 999")
-    void testGenerate_shouldIgnoreOtherOptionsAndOnlyUsePattern1() {
+    @DisplayName("Should ignore other options and only use pattern")
+    void testGenerate_shouldIgnoreOtherOptionsAndUseOnlyPattern() {
         PasswordOptions options = PasswordOptions.builder()
-                .pattern("L#DLL#")
-                .length(999) // doit être ignoré ici
                 .strategy(PasswordStrategyType.PATTERN)
+                .pattern("L#D-L#D-L#D")  // longueur totale = 11
+                .length(11)              // conforme à la validation
+                .includeDigits(false)
+                .includeLowercase(false)
+                .includeUppercase(false)
+                .includeSpecialChars(false)
+                .includeDash(false)
                 .build();
 
         String password = patternStrategy.generate(options);
 
-        assertEquals(6, password.length());
+        assertEquals(11, password.length());
+
     }
 
-    @Test
-    @DisplayName("Should ignore other options and only use pattern length = 2")
-    void testGenerate_shouldIgnoreOtherOptionsAndOnlyUsePattern2() {
-        PasswordOptions options = PasswordOptions.builder()
-                .pattern("L#D##L")
-                .length(3) // doit être ignoré ici
-                .strategy(PasswordStrategyType.PATTERN)
-                .build();
-
-        String password = patternStrategy.generate(options);
-
-        assertEquals(6, password.length());
-    }
 
     @Test
     void testGenerate_shouldThrowExceptionForPatternWithUnicode() {

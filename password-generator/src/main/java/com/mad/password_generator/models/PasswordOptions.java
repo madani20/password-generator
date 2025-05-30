@@ -136,9 +136,6 @@ public final class PasswordOptions {
             if (length < 6 || length > 128) {
                 throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
             }
-            if (!includeUppercase && !includeLowercase && !includeDigits && !includeSpecialChars && !includeDash) {
-               throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
-           }
            return new PasswordOptions(this);
         }
     }

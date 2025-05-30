@@ -9,13 +9,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-//@Validated
+@Validated
 @RestController
 @RequestMapping("/api")
 public class PasswordController {
@@ -47,7 +49,7 @@ public class PasswordController {
                          content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init PasswordController()");
         PasswordOptionsResponseDTO generatedPassword = passwordOptionsService.generate(passwordOptionsRequestDTO);
         logger.info("Fin PasswordController()");
