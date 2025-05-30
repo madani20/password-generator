@@ -98,7 +98,10 @@ public class PasswordController {
                     description = "List of available strategies.",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = PasswordStrategyResponseDTO.class)
+                            schema = @Schema(implementation = PasswordStrategyResponseDTO.class),
+                            examples = @ExampleObject(
+                                    value = "{\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixé\"}"
+                            )
                             )),
            @ApiResponse(
                     responseCode = "500",
