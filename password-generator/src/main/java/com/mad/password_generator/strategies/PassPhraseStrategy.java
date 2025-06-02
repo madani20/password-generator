@@ -21,8 +21,8 @@ import java.util.Random;
  *     Options spéciales : permet d’ajouter chiffre ou ponctuation (avec includeDigits, etc.)
  */
 @Component
-public class Pass_phraseStrategy implements _PasswordGenerationStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(Pass_phraseStrategy.class);
+public class PassPhraseStrategy implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(PassPhraseStrategy.class);
 
     private final Random random = new SecureRandom();
 

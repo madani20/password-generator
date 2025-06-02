@@ -21,8 +21,8 @@ import java.util.Random;
  *     Nécessite : un champ pattern dans le payload
  */
 @Component
-public class Pattern_basedStrategy implements _PasswordGenerationStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(Pattern_basedStrategy.class);
+public class PatternBasedStrategy implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(PatternBasedStrategy.class);
     private static final Random random = new SecureRandom();
 
     @Override
@@ -32,13 +32,13 @@ public class Pattern_basedStrategy implements _PasswordGenerationStrategy {
 
     @Override
     public String generate(PasswordOptions options) {
-    logger.info("Init generate from Pattern_basedStrategy");
+    logger.info("Init generate from PatternBasedStrategy");
 
         validateOptions(options);
 
         String generatedPasswordPattern = generatePasswordPattern(options);
 
-    logger.info("Fin generate from Pattern_basedStrategy");
+    logger.info("Password generated with PATTERN strategy");
         return generatedPasswordPattern;
     }
 
@@ -92,19 +92,4 @@ public class Pattern_basedStrategy implements _PasswordGenerationStrategy {
         logger.info("Fin generatedPasswordPattern");
     return passwordToGenerate.toString();
     }
-
-    // if(!hasStrategyAndPattern(passwordOptions))
-    //     throw new InvalidPasswordOptionsException("Options requises manquantes.");
-
-    //  if(passwordOptions.getPattern().length() < 6)
-    //      throw new InvalidPasswordOptionsException("L'option nécessite un minimum de 6 caractères\n");
-
-    //  private boolean hasStrategyAndPattern(PasswordOptions passwordOptions) {
-   //     return passwordOptions.getPasswordStrategyType() == PasswordStrategyType.PATTERN && !passwordOptions.getPattern().isBlank();
-   // }
-
-    //private char randomChar(String chars) {
-    //    return chars.charAt(random.nextInt(chars.length()));
-    //}
-
 }

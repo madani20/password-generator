@@ -74,9 +74,9 @@ public class PasswordController {
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
     public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-        logger.info("Init PasswordController()");
+        logger.info("Init generate from PasswordController()");
         PasswordOptionsResponseDTO generatedPassword = passwordOptionsService.generate(passwordOptionsRequestDTO);
-        logger.info("Fin PasswordController()");
+        logger.info("Fin generate from PasswordController()");
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
 
@@ -101,8 +101,7 @@ public class PasswordController {
                             schema = @Schema(implementation = PasswordStrategyResponseDTO.class),
                             examples = @ExampleObject(
                                     value = "{\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixé\"}"
-                            )
-                            )),
+                            ))),
            @ApiResponse(
                     responseCode = "500",
                     description = "Internal Server Error",
@@ -111,9 +110,9 @@ public class PasswordController {
     })
     @GetMapping(value = "/strategies")
     public ResponseEntity<List<PasswordStrategyResponseDTO>> getStrategies() {
-        logger.info("Init getStrategies");
+        logger.info("Init getStrategies from passwordController");
         List<PasswordStrategyResponseDTO> strategies = passwordStrategyService.getAllStrategies();
-        logger.info("Fin getStrategies");
+        logger.info("Fin getStrategies from passwordController");
         return ResponseEntity.ok(strategies);
     }
   }

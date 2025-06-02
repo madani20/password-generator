@@ -64,15 +64,14 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO == null)
             throw new InvalidPasswordOptionsException("Pas d'objet requête");
 
+        if(passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().toString().isBlank())
+            throw new InvalidPasswordOptionsException("Une stratégie de génération est requise.");
+
         if(passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
             if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() && !passwordOptionsRequestDTO.isIncludeDigits()
                     && !passwordOptionsRequestDTO.isIncludeSpecialChars() && !passwordOptionsRequestDTO.isIncludeDash()) {
                 throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
             }
-        }
-
-        if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().toString().isBlank()) {
-            throw new InvalidPasswordOptionsException("Une stratégie de génération est requise.");
         }
 
        logger.info("Fin validateInput");

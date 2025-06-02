@@ -69,8 +69,8 @@ public final class PasswordOptions {
         private String pattern;
         private String prefix;
         private String suffix;
+        private boolean excludeSimilarChars = true;
 
-        private boolean excludeSimilarChars = false;
         private boolean requireEachType = false;
         private String allowedChars;
 
@@ -136,6 +136,7 @@ public final class PasswordOptions {
             if (length < 6 || length > 128) {
                 throw new InvalidPasswordOptionsException("La longueur du mot de passe doit être comprise entre 6 et 128 caractères.");
             }
+
            return new PasswordOptions(this);
         }
     }
