@@ -13,8 +13,9 @@ import lombok.Setter;
 public class PasswordOptionsRequestDTO {
 
     @Schema(description = "Password length (min: 6, max: 128)", example = "12", minimum = "6", maximum = "128")
-    @Min(value = 6, message = "La longueur minimale est de 6 caractères.")
-    @Max(value = 128, message = "La longueur maximale est de 128 caractères")
+    @Min(value = 6, message = "The minimum length is 6 characters.")
+    @Max(value = 128, message = "The maximum length is 128 characters.")
+    @NotNull
     private int length;
 
     @Schema(description = "Use uppercase letters", example = "true")
@@ -35,10 +36,13 @@ public class PasswordOptionsRequestDTO {
     @Schema(description = "Exclude similar chars ", example = "false")
     private boolean excludeSimilarChars = false;
 
+    @Schema(description = "Uses a provided character set")
+    private String allowedChars;
+
     @Schema(description = "Require all types", example = "true")
     private boolean requireEachType = false;
 
-    @Schema(description = "Name of the strategy used\", example = \"RANDOM\", allowableValues = {\"RANDOM\", \"PATTERN\", \"PIN\", \"PASS_PHRASE\"})")
+    @Schema(description = "Name of the strategy used", example = "\"RANDOM\", allowableValues = {\"RANDOM\", \"PATTERN\", \"CUSTOM_SET\", \"PASS_PHRASE\"})")
     @NotNull
     private PasswordStrategyType strategy;
 
@@ -50,6 +54,5 @@ public class PasswordOptionsRequestDTO {
 
     @Schema(description = "A suffix is added to the end of the password", example = "aBc456" )
     private String suffix;
-
 
 }

@@ -64,10 +64,14 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO == null)
             throw new InvalidPasswordOptionsException("Pas d'objet requête");
 
+        isKnownStrategy(passwordOptionsRequestDTO.getStrategy().toString());
+
+
         if(passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().toString().isBlank())
             throw new InvalidPasswordOptionsException("Une stratégie de génération est requise.");
 
-        if(passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN) {
+        if(passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN
+            && passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.CUSTOM_SET) {
             if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() && !passwordOptionsRequestDTO.isIncludeDigits()
                     && !passwordOptionsRequestDTO.isIncludeSpecialChars() && !passwordOptionsRequestDTO.isIncludeDash()) {
                 throw new InvalidPasswordOptionsException("Au moins un type de caractère doit être sélectionné!");
@@ -77,12 +81,24 @@ public class PasswordOptionsService {
        logger.info("Fin validateInput");
     }
 
+    //============================== UTILITAIRES ====================================================================
+
+    private void isKnownStrategy(String strategy) {
+        logger.info("stratégie: {}", strategy);
+        if(!PasswordStrategyType.RANDOM.toString().equals(strategy.trim()) ||
+            !PasswordStrategyType.PATTERN.toString().equals(strategy.trim()) ||
+            !PasswordStrategyType.CUSTOM_SET.toString().equals(strategy.trim()) ||
+            !PasswordStrategyType.PASS_PHRASE.toString().equals(strategy.trim()) ||
+            !PasswordStrategyType.PIN.toString().equals(strategy.trim()))
+
+            throw new InvalidPasswordOptionsException("Unknown strategy.");
+    }
+
+
     private boolean requiredEachType(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         return passwordOptionsRequestDTO.isIncludeUppercase() && passwordOptionsRequestDTO.isIncludeLowercase() && passwordOptionsRequestDTO.isIncludeDigits()
                 && passwordOptionsRequestDTO.isIncludeSpecialChars() && passwordOptionsRequestDTO.isIncludeDash();
     }
 
-//    private boolean hasStrategy(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
-//        return passwordOptionsRequestDTO.getStrategy() != null;
-//    }
+
 }

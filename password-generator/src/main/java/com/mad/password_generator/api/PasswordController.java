@@ -47,7 +47,7 @@ public class PasswordController {
     @Tag(name = "Password Generation", description = "Operations related to password generation")
     @Operation(
             summary = "Generate a secure password",
-            description = "Generates a password based on the strategy chosen from the 4 available. " +
+            description = "Generates a password using one of the four available strategies. " +
                     "Each strategy applies different complexity rules (see strategy documentation).",
             operationId = "generateSecurePassword"
     )
@@ -93,16 +93,48 @@ public class PasswordController {
                           )),
             @ApiResponse(
                          responseCode = "400",
-                         description = "Invalid parameter(s) or unknown strategy.",
+                         description = "Bad request - Invalid password options.",
                          content = @Content(
+                                 mediaType = "application/json",
                                  schema = @Schema(implementation = ErrorResponse.class),
                                  examples = {
                                          @ExampleObject(
-                                                 name = "Unknown strategy",
-                                                 value = "{\"error\": \"Invalid strategy\"}"),
+                                                 name = "length less than 6",
+                                                 value = "{\"error\": \"The minimum length is 6 characters.\"}"
+                                         ),
+                                         @ExampleObject(
+                                                 name = "Invalid strategy",
+                                                 value = "{\n" +
+                                                         "  \"status\": 400,\n" +
+                                                         "  \"error\": \"Bad Request\",\n" +
+                                                         "  \"message\": \"Invalid strategy: 'Custom set'. Allowed values: [PATTERN, RANDOM, CUSTOM_SET, PASS_PHRASE]\",\n" +
+                                                         "  \"path\": \"/api/password/generate\",\n" +
+                                                         "  \"timestamp\": \"2025-05-21T17:35:10\"\n" +
+                                                         "}"
+                                         ),
                                          @ExampleObject(
                                                  name = "No character options selected",
-                                                 value = "{ \"error\": \"No character selected.\" }"
+                                                 value = """
+                                                        {
+                                                         "status": 400,
+                                                          "error": "Validation Failed",
+                                                         "message": "allowedChars: must not be blank",
+                                                         "path": "/api/password/generate",
+                                                         "timestamp": "2025-05-21T17:45:00"
+                                                         }
+                                                        """
+                                         ),
+                                         @ExampleObject(
+                                                 name = "Empty char set",
+                                                 value = """
+                                                        {
+                                                         "status": 400,
+                                                         "error": "Validation Failed",
+                                                         "message": "You must provide a non-empty character set.",
+                                                         "path": "/api/password/generate",
+                                                         "timestamp": "2025-05-21T17:45:00"
+                                                         }
+                                                        """
                                          )
                                  } )),
             @ApiResponse(
@@ -113,7 +145,15 @@ public class PasswordController {
                                  examples = {
                                          @ExampleObject(
                                                  name = "Generic error",
-                                                 value = "{ \"error\": \"An internal error has occurred\" }"
+                                                 value = """
+                                                        {
+                                                          "status": 500,
+                                                          "error": "Internal Server Error",
+                                                          "message": "An unexpected error occurred.",
+                                                          "path": "/api/password/generate",
+                                                          "timestamp": "2025-05-21T17:45:00"
+                                                        }
+                                                    """
                                          )})),
 
     })
@@ -135,7 +175,7 @@ public class PasswordController {
     @Tag(name = "List the strategies", description = "Operations related to available strategies")
     @Operation(
             summary = "Returns the list of existing strategies.",
-            description = "Returns the list of existing strategies to choose from for password generation",
+            description = "Lists all available strategies for password generation",
             operationId = "listOfStrategies"
     )
     @ApiResponses(value = {
@@ -151,8 +191,9 @@ public class PasswordController {
                                             value = """
                                                     [
                                                       {"name": "RANDOM", "description": "Mixed random generation. Generate a purely random password with all allowed characters."},
-                                                      {"name": "PATTERN", "description": "Generation based on a defined pattern\
-                                                    "}
+                                                      {"name": "PATTERN", "description": "Generation based on a defined pattern"},
+                                                      {"name": "CUSTOM_SET", "description": "Generation with set of possible characters" },
+                                                      {"name": "PASS_PHRASE", "description": "Memorable phrase with several words" }
                                                     ]"""
                                     )
                             }
@@ -161,8 +202,25 @@ public class PasswordController {
                     responseCode = "500",
                     description = "Internal Server Error",
                     content = @Content(
-                            schema = @Schema(implementation = ErrorResponse.class)))
-    })
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Generic error",
+                                            value = """
+                                                    {
+                                                      "status": 500,
+                                                      "error": "Internal Server Error",
+                                                      "message": "An unexpected error occurred.",
+                                                      "path": "/api/strategies",
+                                                      "timestamp": "2025-05-21T17:45:00"
+                                                    }
+                                                    """
+                                    )
+                            }
+                            ))
+    }
+    )
     @GetMapping(value = "/strategies")
     public ResponseEntity<List<PasswordStrategyResponseDTO>> getStrategies() {
         logger.info("Init getStrategies from passwordController");
@@ -173,16 +231,3 @@ public class PasswordController {
   }
 
 // GET /api/password/strength?value=...   Analyse la force d’un mot de passe donné.
-/**
- *
-
-
-
- @ExampleObject(
- name = "List of strategies",
- value = "[\n" +
- "  {\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixée\"},\n" +
- "  {\"name\": \"PATTERN\", \"description\": \"Génération basée sur un motif défini\"}\n" +
- "]"
- )
- */

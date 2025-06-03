@@ -16,15 +16,15 @@ public class PasswordOptionsMapperImpl implements PasswordOptionsMapper{
                 .includeDigits(dto.isIncludeDigits())
                 .includeSpecialChars(dto.isIncludeSpecialChars())
                 .excludeSimilarChars(dto.isExcludeSimilarChars())
-                //.excludeAmbiguousChars(dto.isExcludeAmbiguousChars())
-                //.allowRepeats(dto.isAllowRepeats())
-                .requireEachType(dto.isRequireEachType())
                 .strategy(dto.getStrategy())
                 .pattern(dto.getPattern())
                 .prefix(dto.getPrefix())
                 .suffix(dto.getSuffix())
+                .allowedChars(dto.getAllowedChars())
+                //.requireEachType(dto.isRequireEachType())
+                //.excludeAmbiguousChars(dto.isExcludeAmbiguousChars())
+                //.allowRepeats(dto.isAllowRepeats())
                 //.avoidWords(dto.getAvoidWords())
-                //.allowedChars(dto.getAllowedChars())
                 .build();
     }
 

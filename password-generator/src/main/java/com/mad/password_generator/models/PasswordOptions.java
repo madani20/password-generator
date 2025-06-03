@@ -29,12 +29,13 @@ public final class PasswordOptions {
         this.includeSpecialChars = builder.includeSpecialChars;
         this.includeDash = builder.includeDash;
         this.excludeSimilarChars = builder.excludeSimilarChars;
-        this.requireEachType = builder.requireEachType;
         this.passwordStrategyType = builder.strategy;
         this.pattern = builder.pattern;
         this.allowedChars = builder.allowedChars;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
+
+        this.requireEachType = builder.requireEachType;
 
     }
 
@@ -50,10 +51,11 @@ public final class PasswordOptions {
     public String getPattern() { return pattern; }
     public String getPrefix() { return prefix; }
     public String getSuffix() { return suffix; }
-
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
-    public boolean isRequireEachType() { return requireEachType; }
     public String getAllowedChars() { return allowedChars; }
+
+    public boolean isRequireEachType() { return requireEachType; }
+
 
     public static Builder builder() {
         return new Builder();
@@ -70,9 +72,10 @@ public final class PasswordOptions {
         private String prefix;
         private String suffix;
         private boolean excludeSimilarChars = true;
+        private String allowedChars;
 
         private boolean requireEachType = false;
-        private String allowedChars;
+
 
 
         // === MÉTHODES DE CONFIGURATION ===
