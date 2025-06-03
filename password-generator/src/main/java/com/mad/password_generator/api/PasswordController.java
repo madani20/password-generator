@@ -56,21 +56,64 @@ public class PasswordController {
                          content = @Content(
                                  mediaType = "application/json",
                                  schema = @Schema(implementation = PasswordOptionsResponseDTO.class),
-                                 examples = @ExampleObject(
-                                         value = "{\"password\": \"A1!cD3\"}"
-                         ))),
+                                 examples = {
+                                    @ExampleObject(
+                                            name = "Simple random password",
+                                            summary = "12 alphanumeric characters with uppercase letters",
+                                            value = "{\n" +
+                                                    "  \"length\": 12,\n" +
+                                                    "  \"strategy\": \"RANDOM\",\n" +
+                                                    "  \"includeUppercase\": true,\n" +
+                                                    "  \"includeLowercase\": true,\n" +
+                                                    "  \"includeDigits\": true\n" +
+                                                    "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Password with special characters",
+                                            summary = "Random with special characters and numbers",
+                                            value = "{\n" +
+                                                    "  \"length\": 16,\n" +
+                                                    "  \"strategy\": \"RANDOM\",\n" +
+                                                    "  \"includeSpecialChars\": true,\n" +
+                                                    "  \"includeDigits\": true\n" +
+                                                    "}"
+                                    ),
+                                    @ExampleObject(
+                                            name = "Pattern Based (PATTERN)",
+                                            summary = "Password based on a predefined pattern",
+                                            value = "{\n" +
+                                                    "  \"length\": 12,\n" +
+                                                    "  \"strategy\": \"PATTERN\",\n" +
+                                                    "  \"pattern\": \"DL#-LL-###D\"\n" +
+                                                    "}"
+                                    )
+                                 }
+                          )),
             @ApiResponse(
                          responseCode = "400",
                          description = "Invalid parameter(s) or unknown strategy.",
                          content = @Content(
                                  schema = @Schema(implementation = ErrorResponse.class),
-                                 examples = @ExampleObject(
-                                         value = "{\"error\": \"Invalid strategy\"}"))),
+                                 examples = {
+                                         @ExampleObject(
+                                                 name = "Unknown strategy",
+                                                 value = "{\"error\": \"Invalid strategy\"}"),
+                                         @ExampleObject(
+                                                 name = "No character options selected",
+                                                 value = "{ \"error\": \"No character selected.\" }"
+                                         )
+                                 } )),
             @ApiResponse(
                          responseCode = "500",
                          description = "Internal Server Error",
                          content = @Content(
-                                 schema = @Schema(implementation = ErrorResponse.class)))
+                                 schema = @Schema(implementation = ErrorResponse.class),
+                                 examples = {
+                                         @ExampleObject(
+                                                 name = "Generic error",
+                                                 value = "{ \"error\": \"An internal error has occurred\" }"
+                                         )})),
+
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
     public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
@@ -99,9 +142,23 @@ public class PasswordController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = PasswordStrategyResponseDTO.class),
-                            examples = @ExampleObject(
-                                    value = "{\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixé\"}"
-                            ))),
+                            examples = {
+                                    @ExampleObject(
+                                            value = "{\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixé\"}"
+                                    ),
+                                    @ExampleObject(
+                                    name = "Random strategy example",
+                                    summary = "Random strategy with digits and special chars",
+                                    value = "{\n" +
+                                            "  \"length\": 12,\n" +
+                                            "  \"strategy\": \"RANDOM\",\n" +
+                                            "  \"includeUppercase\": true,\n" +
+                                            "  \"includeDigits\": true,\n" +
+                                            "  \"includeSpecialChars\": true\n" +
+                                            "}"
+                                    )
+                            }
+                    )),
            @ApiResponse(
                     responseCode = "500",
                     description = "Internal Server Error",
@@ -118,3 +175,16 @@ public class PasswordController {
   }
 
 // GET /api/password/strength?value=...   Analyse la force d’un mot de passe donné.
+/**
+ *
+
+
+
+ @ExampleObject(
+ name = "List of strategies",
+ value = "[\n" +
+ "  {\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixée\"},\n" +
+ "  {\"name\": \"PATTERN\", \"description\": \"Génération basée sur un motif défini\"}\n" +
+ "]"
+ )
+ */
