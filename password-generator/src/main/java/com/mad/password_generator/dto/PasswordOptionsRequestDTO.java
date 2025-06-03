@@ -30,7 +30,7 @@ public class PasswordOptionsRequestDTO {
     private boolean includeDash = true;
 
     @Schema(description = "Use special chars ", example = "true")
-    private boolean includeSpecialChars = false;
+    private boolean includeSpecialChars = true;
 
     @Schema(description = "Exclude similar chars ", example = "false")
     private boolean excludeSimilarChars = false;
@@ -42,7 +42,7 @@ public class PasswordOptionsRequestDTO {
     @NotNull
     private PasswordStrategyType strategy;
 
-    @Schema(description = "Pattern to be respected (optional, for PATTERN strategy)\", example = \"##-DDDDLL-#L\"")
+    @Schema(description = "Pattern to be respected, only for strategy PATTERN. Valid characters are: '-', 'L', '#', 'D'", example = "##-DDDDLL-#L")
     private String pattern;
 
     @Schema(description = "A prefix is added at the beginning of the password", example = "A123")

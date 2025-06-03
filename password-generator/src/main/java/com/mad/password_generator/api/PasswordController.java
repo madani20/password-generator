@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,7 @@ public class PasswordController {
      * @param passwordOptionsRequestDTO contient les options disponibles pour la génération du mot de passe.
      * @return Le mot de passe.
      */
+    @Tag(name = "Password Generation", description = "Operations related to password generation")
     @Operation(
             summary = "Generate a secure password",
             description = "Generates a password based on the strategy chosen from the 4 available. " +
@@ -130,6 +132,7 @@ public class PasswordController {
      *
      * @return liste des stratégies
      */
+    @Tag(name = "List the strategies", description = "Operations related to available strategies")
     @Operation(
             summary = "Returns the list of existing strategies.",
             description = "Returns the list of existing strategies to choose from for password generation",
@@ -144,18 +147,13 @@ public class PasswordController {
                             schema = @Schema(implementation = PasswordStrategyResponseDTO.class),
                             examples = {
                                     @ExampleObject(
-                                            value = "{\"name\": \"RANDOM\", \"description\": \"Génération aléatoire mixé\"}"
-                                    ),
-                                    @ExampleObject(
-                                    name = "Random strategy example",
-                                    summary = "Random strategy with digits and special chars",
-                                    value = "{\n" +
-                                            "  \"length\": 12,\n" +
-                                            "  \"strategy\": \"RANDOM\",\n" +
-                                            "  \"includeUppercase\": true,\n" +
-                                            "  \"includeDigits\": true,\n" +
-                                            "  \"includeSpecialChars\": true\n" +
-                                            "}"
+                                    name = "List of strategies",
+                                            value = """
+                                                    [
+                                                      {"name": "RANDOM", "description": "Mixed random generation. Generate a purely random password with all allowed characters."},
+                                                      {"name": "PATTERN", "description": "Generation based on a defined pattern\
+                                                    "}
+                                                    ]"""
                                     )
                             }
                     )),

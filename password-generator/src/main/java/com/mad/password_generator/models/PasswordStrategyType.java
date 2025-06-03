@@ -2,10 +2,10 @@ package com.mad.password_generator.models;
 
 
 public enum PasswordStrategyType {
-    RANDOM("Génération aléatoire mixée"),
-    PATTERN("Génération basée sur un motif"),
-    PIN("Génération aléatoire d'un code numérique"),
-    PASS_PHRASE("Génération via une phrase mémorable");
+    RANDOM("Mixed random generation"),
+    PATTERN("Pattern-based generation"),
+    PIN("Random generation of a digital code"),
+    PASS_PHRASE("Generation via a memorable phrase");
 
 
     private final String description;
