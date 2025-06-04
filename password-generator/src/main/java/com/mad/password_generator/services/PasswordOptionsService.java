@@ -85,10 +85,9 @@ public class PasswordOptionsService {
 
     private void isKnownStrategy(String strategy) {
         logger.info("stratégie: {}", strategy);
-        if(!PasswordStrategyType.RANDOM.toString().equals(strategy.trim()) ||
-            !PasswordStrategyType.PATTERN.toString().equals(strategy.trim()) ||
-            !PasswordStrategyType.CUSTOM_SET.toString().equals(strategy.trim()) ||
-            !PasswordStrategyType.PASS_PHRASE.toString().equals(strategy.trim()) ||
+
+        if(!PasswordStrategyType.RANDOM.toString().equals(strategy.trim()) && !PasswordStrategyType.PATTERN.toString().equals(strategy.trim()) &&
+            !PasswordStrategyType.CUSTOM_SET.toString().equals(strategy.trim()) && !PasswordStrategyType.PASS_PHRASE.toString().equals(strategy.trim()) &&
             !PasswordStrategyType.PIN.toString().equals(strategy.trim()))
 
             throw new InvalidPasswordOptionsException("Unknown strategy.");

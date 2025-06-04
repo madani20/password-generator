@@ -23,8 +23,8 @@ import java.util.Random;
  * }
  */
 @Component
-public class CustomSet implements _PasswordGenerationStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(CustomSet.class);
+public class CustomSetStrategy implements _PasswordGenerationStrategy {
+    private static final Logger logger = LoggerFactory.getLogger(CustomSetStrategy.class);
     private static final Random random = new SecureRandom();
 
     @Override
@@ -34,13 +34,13 @@ public class CustomSet implements _PasswordGenerationStrategy {
 
     @Override
     public String generate(PasswordOptions options) {
-        logger.debug("Init generate");
+        logger.debug("Init generate from CustomSetStrategy");
 
         validateOptions(options);
 
         String generatedCustomSetPassword = generateCustomSetPassword(options);
 
-        logger.debug("Password generated with CustomSet strategy");
+        logger.debug("Password generated with CustomSetStrategy");
         return generatedCustomSetPassword;
     }
 

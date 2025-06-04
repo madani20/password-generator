@@ -61,7 +61,7 @@ public class PasswordController {
                                  examples = {
                                     @ExampleObject(
                                             name = "Simple random password",
-                                            summary = "12 alphanumeric characters with uppercase letters",
+                                            summary = "Alphanumeric characters with uppercase letters",
                                             value = "{\n" +
                                                     "  \"length\": 12,\n" +
                                                     "  \"strategy\": \"RANDOM\",\n" +
@@ -88,7 +88,15 @@ public class PasswordController {
                                                     "  \"strategy\": \"PATTERN\",\n" +
                                                     "  \"pattern\": \"DL#-LL-###D\"\n" +
                                                     "}"
-                                    )
+                                    ),@ExampleObject(
+                                                 name = "Custom set ",
+                                                 summary = "Pattern based on a provided character set",
+                                                 value = "{\n" +
+                                                         "  \"length\": 20,\n" +
+                                                         "  \"strategy\": \"CUSTOM_SET\",\n" +
+                                                         "  \"allowedChars\": \"8M!tK\"\n" +
+                                                         "}"
+                                         )
                                  }
                           )),
             @ApiResponse(
@@ -158,7 +166,7 @@ public class PasswordController {
 
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody(required = true) @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init generate from PasswordController()");
         PasswordOptionsResponseDTO generatedPassword = passwordOptionsService.generate(passwordOptionsRequestDTO);
         logger.info("Fin generate from PasswordController()");
