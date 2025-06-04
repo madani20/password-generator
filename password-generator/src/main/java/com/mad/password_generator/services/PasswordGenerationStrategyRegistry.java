@@ -1,6 +1,5 @@
 package com.mad.password_generator.services;
 
-import com.mad.password_generator.exceptions.StrategyNotFoundException;
 import com.mad.password_generator.models.PasswordStrategyType;
 import com.mad.password_generator.strategies._PasswordGenerationStrategy;
 import org.slf4j.Logger;
