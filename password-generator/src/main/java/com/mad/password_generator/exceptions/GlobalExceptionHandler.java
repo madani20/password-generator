@@ -52,10 +52,10 @@ public class GlobalExceptionHandler { //extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidPasswordOptionsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidPasswordOptionsException(InvalidPasswordOptionsException invalidPasswordOptionsException,
                                                                                HttpServletRequest request) {
-       // ErrorResponse errorResponse= new ErrorResponse(invalidPasswordOptionsException.getMessage());
+
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
+               "Validation Failed",
                 invalidPasswordOptionsException.getMessage(),
                 request.getRequestURI(),
                 LocalDateTime.now()
@@ -65,24 +65,24 @@ public class GlobalExceptionHandler { //extends ResponseEntityExceptionHandler {
 
 
 
-
-    /**
-     * Gestion des exceptions strategyNotFoundException
-     *
-     * @param strategyNotFoundException
-     * @return
-     */
-    @ExceptionHandler(StrategyNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleStrategyNotFoundException(StrategyNotFoundException strategyNotFoundException, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
-                strategyNotFoundException.getMessage(),
-                request.getRequestURI(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(400));
-    }
+//
+//    /**
+//     * Gestion des exceptions strategyNotFoundException
+//     *
+//     * @param strategyNotFoundException
+//     * @return
+//     */
+//    @ExceptionHandler(StrategyNotFoundException.class)
+//    public ResponseEntity<ErrorResponse> handleStrategyNotFoundException(StrategyNotFoundException strategyNotFoundException, HttpServletRequest request) {
+//        ErrorResponse errorResponse = new ErrorResponse(
+//                HttpStatus.BAD_REQUEST.value(),
+//                "Validation Failed",
+//                strategyNotFoundException.getMessage(),
+//                request.getRequestURI(),
+//                LocalDateTime.now()
+//        );
+//        return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(400));
+//    }
 
 
 
