@@ -25,7 +25,7 @@ import java.util.Random;
 @Component
 public class CustomSetStrategy implements _PasswordGenerationStrategy {
     private static final Logger logger = LoggerFactory.getLogger(CustomSetStrategy.class);
-    private static final Random random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
     @Override
     public PasswordStrategyType getStrategyType() {
