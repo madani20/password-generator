@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -61,8 +60,8 @@ public class PinStrategy implements _PasswordGenerationStrategy{
         // Générer un nombre aléatoire dans la plage [0, max]
         String password;
         do {
-            password = String.format("%0" + length + "d", generateRandomNumberInRange(random, 0, maximum));
-        } while (!isPasswordTooTrivial(password));
+            password = String.format("%0" + length + "d", generateRandomNumberInRange(random, 0, maximum)); //pour conserver les 0 à gauche
+        } while (!isPasswordAcceptable(password));
 
         return password;
     }
@@ -75,7 +74,7 @@ public class PinStrategy implements _PasswordGenerationStrategy{
         return min + fraction;
     }
 
-    private boolean isPasswordTooTrivial(String password) {
+    private boolean isPasswordAcceptable(String password) {
         if(password.chars().distinct().count() == 1)
             return true;
 
