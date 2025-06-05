@@ -9,6 +9,7 @@ Une API REST pour générer des mots de passe sécurisés, selon plusieurs strat
   - `RANDOM` : génération aléatoire classique.
   - `PATTERN` : génération basée sur un motif.
   - `CUSTOM_SET` : génération avec un ensemble de caractères défini.
+  - `PIN  :  génération d'un code PIN aléatoire.
   - `PASS_PHRASE` : génération de phrases faciles à retenir.
 - Validation complète des options de génération.
 - Documentation Swagger intégrée.
