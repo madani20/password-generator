@@ -33,8 +33,8 @@ public class GlobalExceptionHandler { //extends ResponseEntityExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
                 errors,
+                "Validation Failed",
                 request.getRequestURI(),
                 LocalDateTime.now()
         );
@@ -55,8 +55,8 @@ public class GlobalExceptionHandler { //extends ResponseEntityExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-               "Validation Failed",
                 invalidPasswordOptionsException.getMessage(),
+                "Invalid password options",
                 request.getRequestURI(),
                 LocalDateTime.now()
         );
