@@ -57,7 +57,6 @@ public class RandomMixedStrategy implements _PasswordGenerationStrategy {
             throw new InvalidPasswordOptionsException("No character selected");
         }
         if (options.isExcludeSimilarChars() && charSet.length() < options.getLength()) {
-            logger.info("charSet.length(): {} , options.getLength(): {}", charSet.length(), options.getLength());
             throw new InvalidPasswordOptionsException(
                     "Insufficient number of unique characters to generate a password of length " + options.getLength()
             );
