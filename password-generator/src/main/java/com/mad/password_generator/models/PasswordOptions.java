@@ -13,6 +13,7 @@ public final class PasswordOptions {
     private final boolean includeSpecialChars;
     private final boolean includeDash;
     private final boolean excludeSimilarChars;
+    private final boolean excludeAmbiguousChars;
     private final boolean requireEachType;
     private final String allowedChars;
     private final PasswordStrategyType passwordStrategyType;
@@ -32,6 +33,7 @@ public final class PasswordOptions {
         this.passwordStrategyType = builder.strategy;
         this.pattern = builder.pattern;
         this.allowedChars = builder.allowedChars;
+        this.excludeAmbiguousChars = builder.excludeAmbiguousChars;
         this.prefix = builder.prefix;
         this.suffix = builder.suffix;
 
@@ -53,6 +55,8 @@ public final class PasswordOptions {
     public String getSuffix() { return suffix; }
     public boolean isExcludeSimilarChars() { return excludeSimilarChars; }
     public String getAllowedChars() { return allowedChars; }
+    public boolean isExcludeAmbiguousChars() { return excludeAmbiguousChars;
+    }
 
     public boolean isRequireEachType() { return requireEachType; }
 
@@ -62,16 +66,17 @@ public final class PasswordOptions {
     }
     public static class Builder {
         private int length = 12; // Valeur par défaut
-        private boolean includeUppercase = true;
-        private boolean includeLowercase = true;
-        private boolean includeDigits = true;
+        private boolean includeUppercase = false;
+        private boolean includeLowercase = false;
+        private boolean includeDigits = false;
         private boolean includeSpecialChars = false;
-        private boolean includeDash = true;
+        private boolean includeDash = false;
         private PasswordStrategyType strategy = PasswordStrategyType.RANDOM;
         private String pattern;
         private String prefix;
         private String suffix;
-        private boolean excludeSimilarChars = true;
+        private boolean excludeSimilarChars = false;
+        private boolean excludeAmbiguousChars;
         private String allowedChars;
 
         private boolean requireEachType = false;
@@ -122,6 +127,10 @@ public final class PasswordOptions {
         }
         public Builder pattern(String pattern) {
             this.pattern = pattern;
+            return this;
+        }
+        public Builder excludeAmbiguousChars(boolean value) {
+            this.excludeAmbiguousChars = value;
             return this;
         }
 

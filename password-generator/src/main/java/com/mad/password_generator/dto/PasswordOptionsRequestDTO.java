@@ -36,6 +36,9 @@ public class PasswordOptionsRequestDTO {
     @Schema(description = "Exclude similar chars ", example = "false")
     private boolean excludeSimilarChars = false;
 
+    @Schema(description = "Exclude ambiguous chars ", example = "false")
+    private boolean excludeAmbiguousChars = false;
+
     @Schema(description = "Uses a provided character set")
     private String allowedChars;
 

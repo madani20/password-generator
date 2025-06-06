@@ -61,41 +61,46 @@ public class PasswordController {
                                  examples = {
                                     @ExampleObject(
                                             name = "Simple random password",
-                                            summary = "Alphanumeric characters with uppercase letters",
-                                            value = "{\n" +
-                                                    "  \"length\": 12,\n" +
-                                                    "  \"strategy\": \"RANDOM\",\n" +
-                                                    "  \"includeUppercase\": true,\n" +
-                                                    "  \"includeLowercase\": true,\n" +
-                                                    "  \"includeDigits\": true\n" +
-                                                    "}"
+                                            summary = "Alphanumeric characters with uppercase letters and allowedChar",
+                                            value = """
+                                                    {
+                                                      "length": 10,
+                                                      "strategy": "RANDOM",
+                                                      "allowedChars": "AbcD12!*DK",
+                                                      "includeUppercase": true,
+                                                      "includeLowercase": true,
+                                                      "includeDigits": true
+                                                    }"""
                                     ),
                                     @ExampleObject(
                                             name = "Password with special characters",
                                             summary = "Random with special characters and numbers",
-                                            value = "{\n" +
-                                                    "  \"length\": 16,\n" +
-                                                    "  \"strategy\": \"RANDOM\",\n" +
-                                                    "  \"includeSpecialChars\": true,\n" +
-                                                    "  \"includeDigits\": true\n" +
-                                                    "}"
+                                            value = """
+                                                    {
+                                                      "length": 16,
+                                                      "strategy": "RANDOM",
+                                                      "includeSpecialChars": true,
+                                                      "includeDigits": true
+                                                    }"""
                                     ),
                                     @ExampleObject(
                                             name = "Pattern Based (PATTERN)",
                                             summary = "Password based on a predefined pattern",
-                                            value = "{\n" +
-                                                    "  \"length\": 12,\n" +
-                                                    "  \"strategy\": \"PATTERN\",\n" +
-                                                    "  \"pattern\": \"DL#-LL-###D\"\n" +
-                                                    "}"
+                                            value = """
+                                                    {
+                                                      "length": 12,
+                                                      "strategy": "PATTERN",
+                                                      "pattern": "DL#-LL-###D"
+                                                    }"""
                                     ),@ExampleObject(
                                                  name = "Custom set ",
                                                  summary = "Pattern based on a provided character set",
-                                                 value = "{\n" +
-                                                         "  \"length\": 20,\n" +
-                                                         "  \"strategy\": \"CUSTOM_SET\",\n" +
-                                                         "  \"allowedChars\": \"8M!tK\"\n" +
-                                                         "}"
+                                                 value = """
+                                                         {
+                                                           "length": 20,
+                                                           "strategy": "CUSTOM_SET",
+                                                           "allowedChars": "8M!tK"
+                                                         }"""
                                          )
                                  }
                           )),
@@ -200,6 +205,7 @@ public class PasswordController {
                                                     [
                                                       {"name": "RANDOM", "description": "Mixed random generation. Generate a purely random password with all allowed characters."},
                                                       {"name": "PATTERN", "description": "Generation based on a defined pattern"},
+                                                      {"name": "PIN", "description": "Generate a random PIN code" },
                                                       {"name": "CUSTOM_SET", "description": "Generation with set of possible characters" },
                                                       {"name": "PASS_PHRASE", "description": "Memorable phrase with several words" }
                                                     ]"""

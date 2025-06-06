@@ -37,25 +37,32 @@ public class RandomMixedStrategy implements _PasswordGenerationStrategy {
 
         StringBuilder charSet = buildCharacterSet(options);
 
-        if (charSet.isEmpty()) {
-            throw new InvalidPasswordOptionsException("Aucun caractère sélectionné.");
-        }
+        validateInput(charSet, options);
 
-        if (options.isExcludeSimilarChars() && charSet.length() < options.getLength()) {
-            throw new InvalidPasswordOptionsException(
-                    "Nombre de caractères uniques insuffisant pour générer un mot de passe de longueur " + options.getLength()
-            );
+        if (options.isExcludeAmbiguousChars()) {
+            deleteAmbiguousChars(charSet);
         }
-
-        String password = options.isExcludeSimilarChars()
-                ? generateWithoutSimilarChars(options, charSet)
-                : generateWithPotentiallySimilarChars(options, charSet);
+        String password;
+        boolean excludeDuplicates = options.isExcludeSimilarChars();
+        password = generatePassword(options.getLength(), charSet, excludeDuplicates);
 
         logger.debug("Password generated with RANDOM strategy");
         return password;
     }
 
-    //==================================================================================================================
+    //========================================[ UTILITAIRES ]==========================================================================
+
+    private void validateInput(StringBuilder charSet, PasswordOptions options) {
+        if (charSet.isEmpty()) {
+            throw new InvalidPasswordOptionsException("No character selected");
+        }
+        if (options.isExcludeSimilarChars() && charSet.length() < options.getLength()) {
+            logger.info("charSet.length(): {} , options.getLength(): {}", charSet.length(), options.getLength());
+            throw new InvalidPasswordOptionsException(
+                    "Insufficient number of unique characters to generate a password of length " + options.getLength()
+            );
+        }
+    }
 
     private StringBuilder buildCharacterSet(PasswordOptions options) {
         if (options.getAllowedChars() != null) {
@@ -71,32 +78,34 @@ public class RandomMixedStrategy implements _PasswordGenerationStrategy {
 
         return set;
     }
-
-    private String generateWithoutSimilarChars(PasswordOptions options, StringBuilder charSet) {
-        Set<Character> usedChars = new HashSet<>();
+    private String generatePassword(int length, StringBuilder charSet, boolean excludeDuplicates) {
+        Set<Character> usedChars = excludeDuplicates ? new HashSet<>() : null;
         StringBuilder result = new StringBuilder();
 
-        while (result.length() < options.getLength()) {
+        while (result.length() < length) {
             char c = charSet.charAt(random.nextInt(charSet.length()));
-            if (!usedChars.contains(c)) {
-                result.append(c);
+            if (excludeDuplicates && usedChars.contains(c))
+                continue;
+
+            result.append(c);
+            if (excludeDuplicates)
                 usedChars.add(c);
+        }
+        return result.toString();
+    }
+
+
+    private void deleteAmbiguousChars(StringBuilder charSet) {
+        for (int i = charSet.length() - 1; i >= 0; i--) {
+            if (ambiguousChar.contains(charSet.charAt(i))) {
+                charSet.deleteCharAt(i);
             }
         }
-
-        return result.toString();
     }
 
-    private String generateWithPotentiallySimilarChars(PasswordOptions options, StringBuilder charSet) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < options.getLength(); i++) {
-            char c = charSet.charAt(random.nextInt(charSet.length()));
-            result.append(c);
-        }
-
-        return result.toString();
-    }
+    private static final Set<Character> ambiguousChar = Set.of(
+            '0','O','1','l','I','|'
+    );
 }
 
 
