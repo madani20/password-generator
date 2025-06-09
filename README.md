@@ -26,7 +26,7 @@ cd password-generator-api
 
 ou avec docker :
 
-docker build -t <nom-de-image:tag>  (pour créer l'image docker)
+docker build -t <nom-de-image:tag> . (pour créer l'image docker, ne pas oublier le point)
 vérifier que l'image est créée avec status up:
 docker ps -a
 
