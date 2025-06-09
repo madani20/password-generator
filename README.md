@@ -5,7 +5,7 @@ Une API REST pour générer des mots de passe sécurisés, selon plusieurs strat
 
 ## 🚀 Fonctionnalités
 
-- Génération de mots de passe sécurisés selon 4 stratégies :
+- Génération de mots de passe sécurisés selon 5 stratégies :
   - `RANDOM` : génération aléatoire classique.
   - `PATTERN` : génération basée sur un motif.
   - `CUSTOM_SET` : génération avec un ensemble de caractères défini.
@@ -23,6 +23,16 @@ Une API REST pour générer des mots de passe sécurisés, selon plusieurs strat
 git clone https://github.com/votre-utilisateur/password-generator-api.git
 cd password-generator-api
 ./mvnw spring-boot:run
+
+ou avec docker :
+
+docker build -t <nom-de-image:tag>  (pour créer l'image docker)
+vérifier que l'image est créée avec status up:
+docker ps -a
+
+puis
+docker run -d --name nom-instance -p 8080:8080 <nom-de-image:tag> (lance le conteneur en mode détaché sur le port 8080)
+
 
 
 ## Une documentation interactive est disponible via Swagger :
