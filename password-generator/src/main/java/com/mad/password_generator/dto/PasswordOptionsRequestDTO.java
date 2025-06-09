@@ -13,7 +13,7 @@ import lombok.Setter;
 public class PasswordOptionsRequestDTO {
 
     @Schema(description = "Password length (min: 6, max: 128)", example = "12", minimum = "6", maximum = "128")
-    @Min(value = 6, message = "The minimum length is 6 characters.")
+    @Min(value = 6, message = "The minimum length is 6 characters (excluding prefix/suffix).")
     @Max(value = 128, message = "The maximum length is 128 characters.")
     @NotNull
     private int length;
@@ -52,10 +52,10 @@ public class PasswordOptionsRequestDTO {
     @Schema(description = "Pattern to be respected, only for strategy PATTERN. Valid characters are: '-', 'L', '#', 'D'", example = "##-DDDDLL-#L")
     private String pattern;
 
-    @Schema(description = "A prefix is added at the beginning of the password", example = "A123")
+    @Schema(description = "Prefix added to the beginning of the generated password", example = "MyApp-")
     private String prefix;
 
-    @Schema(description = "A suffix is added to the end of the password", example = "aBc456" )
+    @Schema(description = "Suffix added to the end of the generated password", example = "-2025")
     private String suffix;
 
 }
