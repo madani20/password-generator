@@ -8,6 +8,7 @@ phrase, ou jeu de caractères défini.
 - Génération de mots de passe sécurisés selon 5 stratégies :
     - `RANDOM` : génération aléatoire classique.
     - `PATTERN` : génération basée sur un motif.
+    - `PIN`    : génération aléatoire d'un code pin.
     - `CUSTOM_SET` : génération avec un ensemble de caractères défini.
     - `PASS_PHRASE` : génération de phrases faciles à retenir.
 - Validation complète des options de génération.
