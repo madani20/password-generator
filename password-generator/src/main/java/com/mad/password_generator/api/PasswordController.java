@@ -101,7 +101,16 @@ public class PasswordController {
                                                            "strategy": "CUSTOM_SET",
                                                            "allowedChars": "8M!tK"
                                                          }"""
-                                         )
+                                    ), @ExampleObject(
+                                                 name = "Digital code",
+                                                 summary = "Generate a digital code",
+                                                 value = """
+                                                        {
+                                                          "length": 6,
+                                                          "strategy": "PIN",
+                                                          "includeDigits": true
+                                                        }"""
+                                             )
                                  }
                           )),
             @ApiResponse(
