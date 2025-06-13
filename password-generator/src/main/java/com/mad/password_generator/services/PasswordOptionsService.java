@@ -5,6 +5,7 @@ import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
 import com.mad.password_generator.exceptions.InvalidPasswordOptionsException;
 import com.mad.password_generator.models.PasswordOptions;
 import com.mad.password_generator.models.PasswordStrategyType;
+import com.mad.password_generator.services.passwordStrengthService.PasswordStrengthEvaluator;
 import com.mad.password_generator.strategies._PasswordGenerationStrategy;
 import com.mad.password_generator.tools.PasswordOptionsMapper;
 import org.slf4j.Logger;
@@ -20,11 +21,12 @@ public class PasswordOptionsService {
     private final PasswordPostProcessorChain passwordPostProcessorChain;
     private final PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry;
 
-    public PasswordOptionsService(PasswordOptionsMapper mapper, PasswordPostProcessorChain postProcessorChain, PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry) {
+    public PasswordOptionsService(PasswordOptionsMapper mapper, PasswordPostProcessorChain postProcessorChain,
+                                  PasswordGenerationStrategyRegistry passwordGenerationStrategyRegistry) {
         this.mapper = mapper;
         this.passwordPostProcessorChain = postProcessorChain;
         this.passwordGenerationStrategyRegistry = passwordGenerationStrategyRegistry;
-    }
+     }
 
     /**
      * Méthode principalle pour la génération du mot de passe.
@@ -56,7 +58,13 @@ public class PasswordOptionsService {
     }
 
 
+
+
+
+
+
     //=============================== METHODES UTILITAIRES =========================================================
+
 
     private void validateInput(PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init validateInput");
@@ -64,14 +72,26 @@ public class PasswordOptionsService {
         if (passwordOptionsRequestDTO == null)
             throw new InvalidPasswordOptionsException("No query object");
 
-        isKnownStrategy(passwordOptionsRequestDTO.getStrategy().toString());
+        String strategy = passwordOptionsRequestDTO.getStrategy() != null
+                ? passwordOptionsRequestDTO.getStrategy().toString()
+                : null;
 
-
-        if (passwordOptionsRequestDTO.getStrategy() == null || passwordOptionsRequestDTO.getStrategy().toString().isBlank())
+        if (strategy == null || strategy.isBlank())
             throw new InvalidPasswordOptionsException("A generation strategy is required.");
 
-        if (passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.PATTERN
-                && passwordOptionsRequestDTO.getStrategy() != PasswordStrategyType.CUSTOM_SET) {
+        String rawStrategy = passwordOptionsRequestDTO.getStrategy() != null
+                ? passwordOptionsRequestDTO.getStrategy().toString()
+                : null;
+
+        if (rawStrategy == null || rawStrategy.isBlank()) {
+            throw new InvalidPasswordOptionsException("A generation strategy is required.");
+        }
+
+        PasswordStrategyType validatedStrategy = PasswordStrategyType.fromString(rawStrategy);
+
+
+        if (validatedStrategy != PasswordStrategyType.PATTERN
+                && validatedStrategy != PasswordStrategyType.CUSTOM_SET) {
             if (!passwordOptionsRequestDTO.isIncludeUppercase() && !passwordOptionsRequestDTO.isIncludeLowercase() && !passwordOptionsRequestDTO.isIncludeDigits()
                     && !passwordOptionsRequestDTO.isIncludeSpecialChars() && !passwordOptionsRequestDTO.isIncludeDash()) {
                 throw new InvalidPasswordOptionsException("At least one character type must be selected!");
@@ -80,27 +100,26 @@ public class PasswordOptionsService {
         logger.info("Fin validateInput");
     }
 
-    //============================== UTILITAIRES ======================================================================
-
-
-    private void isKnownStrategy(String strategy) {
-         if (!PasswordStrategyType.RANDOM.toString().equals(strategy.trim()) && !PasswordStrategyType.PATTERN.toString().equals(strategy.trim()) &&
-                !PasswordStrategyType.CUSTOM_SET.toString().equals(strategy.trim()) && !PasswordStrategyType.PASS_PHRASE.toString().equals(strategy.trim()) &&
-                !PasswordStrategyType.PIN.toString().equals(strategy.trim()))
-
-            throw new InvalidPasswordOptionsException("Unknown strategy.");
-    }
-
-
-    private boolean isPinStrategy(PasswordOptions passwordOptions) {
-        return passwordOptions.getPasswordStrategyType().toString().equals("PIN");
-    }
+//    private void isUnknownStrategy(String strategy) {
+//        PasswordStrategyType passwordStrategyType = PasswordStrategyType.fromString(strategy); // capture l'exception depuis PasswordStrategyType
+//
+//         if ((PasswordStrategyType.RANDOM != passwordStrategyType) && (PasswordStrategyType.PATTERN != passwordStrategyType) &&
+//             (PasswordStrategyType.PIN != passwordStrategyType) && (PasswordStrategyType.CUSTOM_SET != passwordStrategyType) &&
+//             (PasswordStrategyType.PASS_PHRASE != passwordStrategyType))
+//
+//            throw new InvalidPasswordOptionsException("Unknown strategy.");
+//    }
 
     private String doPostProcessorChain(String password, PasswordOptions passwordOptions) {
         if (!isPinStrategy(passwordOptions))
             return passwordPostProcessorChain.apply(password, passwordOptions);
-    return password;
+        return password;
     }
+    private boolean isPinStrategy(PasswordOptions passwordOptions) {
+        return passwordOptions.getPasswordStrategyType().toString().equals("PIN");
+    }
+
+
 }
 
 

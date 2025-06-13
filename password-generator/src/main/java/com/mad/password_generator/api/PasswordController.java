@@ -1,11 +1,10 @@
 package com.mad.password_generator.api;
 
-import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
-import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
-import com.mad.password_generator.dto.PasswordStrategyResponseDTO;
+import com.mad.password_generator.dto.*;
 import com.mad.password_generator.models.ErrorResponse;
 import com.mad.password_generator.services.PasswordOptionsService;
 import com.mad.password_generator.services.PasswordStrategyService;
+import com.mad.password_generator.services.passwordStrengthService.PasswordStrengthEvaluator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -31,14 +30,16 @@ public class PasswordController {
 
     private final PasswordOptionsService passwordOptionsService;
     private final PasswordStrategyService passwordStrategyService;
+    private final PasswordStrengthEvaluator passwordStrengthEvaluator;
 
-    public PasswordController(PasswordOptionsService passwordOptionsService, PasswordStrategyService passwordStrategyService) {
+    public PasswordController(PasswordOptionsService passwordOptionsService, PasswordStrategyService passwordStrategyService, PasswordStrengthEvaluator passwordStrengthEvaluator) {
         this.passwordOptionsService = passwordOptionsService;
         this.passwordStrategyService = passwordStrategyService;
+        this.passwordStrengthEvaluator = passwordStrengthEvaluator;
     }
 
     /**
-     * Endpoint pour la génération d'un mot de passe.
+     * Endpoint pour la génération d'un mot de passe sécurisé.
      *
      *
      * @param passwordOptionsRequestDTO contient les options disponibles pour la génération du mot de passe.
@@ -180,11 +181,19 @@ public class PasswordController {
 
     })
     @PostMapping(value = "/password/generate", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody(required = true) @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
+    public ResponseEntity<PasswordOptionsResponseDTO> generate(@RequestBody @Valid  PasswordOptionsRequestDTO passwordOptionsRequestDTO) {
         logger.info("Init generate from PasswordController()");
         PasswordOptionsResponseDTO generatedPassword = passwordOptionsService.generate(passwordOptionsRequestDTO);
         logger.info("Fin generate from PasswordController()");
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
+    }
+
+    @PostMapping()
+    public ResponseEntity<PasswordStrengthResponseDTO> evaluate(@RequestBody @Valid PasswordStrengthRequestDTO passwordStrengthRequestDTO) {
+        logger.info("Init evaluate from PasswordController");
+        PasswordStrengthResponseDTO passwordStrengthResponseDTO = passwordStrengthEvaluator.analyze(passwordStrengthRequestDTO);
+        logger.info("Fin evaluate from PasswordController");
+        return new ResponseEntity<>(passwordStrengthResponseDTO, HttpStatus.CREATED);
     }
 
 
@@ -253,4 +262,4 @@ public class PasswordController {
     }
   }
 
-// GET /api/password/strength?value=...   Analyse la force d’un mot de passe donné.
+

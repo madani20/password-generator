@@ -2,6 +2,7 @@ package com.mad.password_generator.tools;
 
 import com.mad.password_generator.dto.PasswordOptionsRequestDTO;
 import com.mad.password_generator.dto.PasswordOptionsResponseDTO;
+import com.mad.password_generator.dto.PasswordStrengthResponseDTO;
 import com.mad.password_generator.models.PasswordOptions;
 import org.springframework.stereotype.Component;
 
@@ -32,4 +33,5 @@ public class PasswordOptionsMapperImpl implements PasswordOptionsMapper{
     public PasswordOptionsResponseDTO toResponseDTO(String generatedPassword) {
        return new PasswordOptionsResponseDTO(generatedPassword);
     }
+
 }
