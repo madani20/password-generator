@@ -195,7 +195,7 @@ public class PasswordController {
     @Tag(name = "Password Strength Analyze", description = "analyzes the strength of a password.")
     @Operation(
             summary = "Analyze password strength",
-            description = "Analyzes the strength of a password and returns a score, a level, and optionally suggestions for improving the score.",
+            description = "Analyzes the strength of a given password, returns a score (0-10), a quality level and a list of improvement suggestions.",
             operationId = "analyzePasswordStrength"
     )
     @ApiResponses(value = {
@@ -207,9 +207,9 @@ public class PasswordController {
                             schema = @Schema(implementation = PasswordStrengthResponseDTO.class),
                             examples = {
                                     @ExampleObject(
-                                            name = "Exemple de réponse",
-                                            summary = "Exemple d'analyse de mot de passe fort",
-                                            description = "Un mot de passe fort retournant un score élevé",
+                                            name = "Example response",
+                                            summary = "Password Analysis Example",
+                                            description = "A strong password returning a high score",
                                             value = """
                                                     {
                                                       "score": 7,
@@ -219,9 +219,9 @@ public class PasswordController {
                                                     """
                                     ),
                                     @ExampleObject(
-                                            name = "Exemple de retour",
-                                            summary = "Exemple d'analyse de mot de passe faible",
-                                            description = "Un mot de passe faible retournant un score faible",
+                                            name = "Another example of a response",
+                                            summary = "Example of weak password analysis",
+                                            description = "A weak password returning a low score",
                                             value = """
                                                     {
                                                       "score": 3,
@@ -235,12 +235,19 @@ public class PasswordController {
                                                     """
                                     )
                             }
-                    ))
+                    )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Mot de passe invalide (vide ou nul)",
+                    content = @Content
+            )
     })
     @PostMapping("/password/strength")
     public ResponseEntity<PasswordStrengthResponseDTO> evaluate(@RequestBody @Valid PasswordStrengthRequestDTO passwordStrengthRequestDTO) {
         logger.info("Init evaluate from PasswordController");
+
         PasswordStrengthResponseDTO passwordStrengthResponseDTO = passwordStrengthEvaluator.analyze(passwordStrengthRequestDTO);
+
         logger.info("Fin evaluate from PasswordController");
         return new ResponseEntity<>(passwordStrengthResponseDTO, HttpStatus.CREATED);
     }
