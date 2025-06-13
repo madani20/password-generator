@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-@Schema(description = "DTO containing score, password, entropy, level, and suggestions")
+@Schema(description = "DTO containing score, level, and suggestions")
 public class PasswordStrengthResponseDTO {
 
     private short score;

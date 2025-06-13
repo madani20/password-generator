@@ -62,9 +62,14 @@ public class PasswordStrengthEvaluator implements _PasswordStrengthAnalysisServi
         if (isContainDigit(password))          score += 1;
         if (isContainLowercase(password))      score += 1;
         if (isContainSomeSpecialChar(password))      score += 2;
-        if(isContainSomeSpecialChar(password) && isContainLowercase(password) && isContainCapitalLetter(password) && isContainDigit(password)) score += 1;
-        if (!hasRepeatedChars(password))        score += 1;
-        if (!hasSequentialChars(password))      score += 1;
+        if(!hasRepeatedChars(password) && !hasSequentialChars(password)) score += 1;
+
+        int types = 0;
+        if (isContainCapitalLetter(password)) types++;
+        if (isContainDigit(password)) types++;
+        if (isContainLowercase(password)) types++;
+        if (isContainSomeSpecialChar(password)) types++;
+        if (types >= 3) score += 1;
 
         logger.info("Fin getScoreWithSimpleHeuristic, score {}", score);
         return score;

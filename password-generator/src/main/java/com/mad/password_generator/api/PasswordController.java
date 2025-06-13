@@ -188,7 +188,56 @@ public class PasswordController {
         return new ResponseEntity<>(generatedPassword, HttpStatus.CREATED);
     }
 
-    @PostMapping()
+
+
+
+
+    @Tag(name = "Password Strength Analyze", description = "analyzes the strength of a password.")
+    @Operation(
+            summary = "Analyze password strength",
+            description = "Analyzes the strength of a password and returns a score, a level, and optionally suggestions for improving the score.",
+            operationId = "analyzePasswordStrength"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Score generated successfully.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PasswordStrengthResponseDTO.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Exemple de réponse",
+                                            summary = "Exemple d'analyse de mot de passe fort",
+                                            description = "Un mot de passe fort retournant un score élevé",
+                                            value = """
+                                                    {
+                                                      "score": 7,
+                                                      "level": "Bonne",
+                                                      "suggestions": []
+                                                    }
+                                                    """
+                                    ),
+                                    @ExampleObject(
+                                            name = "Exemple de retour",
+                                            summary = "Exemple d'analyse de mot de passe faible",
+                                            description = "Un mot de passe faible retournant un score faible",
+                                            value = """
+                                                    {
+                                                      "score": 3,
+                                                      "level": "Faible",
+                                                      "suggestions": [
+                                                            "Utilisez au moins 12 caractères",
+                                                            "Ajoutez des chiffres",
+                                                            "Ajoutez des caractères spéciaux"
+                                                          ]
+                                                    }
+                                                    """
+                                    )
+                            }
+                    ))
+    })
+    @PostMapping("/password/strength")
     public ResponseEntity<PasswordStrengthResponseDTO> evaluate(@RequestBody @Valid PasswordStrengthRequestDTO passwordStrengthRequestDTO) {
         logger.info("Init evaluate from PasswordController");
         PasswordStrengthResponseDTO passwordStrengthResponseDTO = passwordStrengthEvaluator.analyze(passwordStrengthRequestDTO);
