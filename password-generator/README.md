@@ -2,6 +2,7 @@
 
 Une API REST pour générer des mots de passe sécurisés, selon plusieurs stratégies personnalisables : aléatoire, pattern,
 phrase, ou jeu de caractères défini.
+Son architecture (patron Strategy) permet l'ajout facile d'une stratégie.
 
 ## 🚀 Fonctionnalités
 
@@ -31,7 +32,7 @@ Création de l'image :
 vérifier que l'image existe avec un status Up en utilisant la commande docker ps -a)
 Lancement du conteneur :
     docker run -d --name <nom-du-conteneur> -p 8080:8080 <nom-de-image:tag>
-    (lace le conteneur en mode détaché sur le port 8080)
+    (lance le conteneur en mode détaché sur le port 8080)
 
 
 ## Une documentation interactive est disponible via Swagger :
