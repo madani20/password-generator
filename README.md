@@ -29,7 +29,7 @@ ou avec docker:
 
 Création de l'image :
     docker build -t <nom-de-image:tag> . (Ne pas oublier le point dans la commande, puis
-vérifier que l'image existe avec un status Up en utilisant la commande docker ps -a)
+vérifier que l'image existe avec la commande docker ps -a)
 Lancement du conteneur :
     docker run -d --name <nom-du-conteneur> -p 8080:8080 <nom-de-image:tag>
     (lance le conteneur en mode détaché sur le port 8080)
