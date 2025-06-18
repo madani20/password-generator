@@ -21,7 +21,7 @@ Son architecture (patron Strategy) permet l'ajout facile d'une stratégie.
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/votre-utilisateur/password-generator-api.git
+git clone https://github.com/madani20/password-generator.git
 cd password-generator-api
 ./mvnw spring-boot:run
 
